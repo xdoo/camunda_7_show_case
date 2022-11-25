@@ -17,7 +17,7 @@ public class GenericProcessStarter implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegate) throws Exception {
-        Object processId = delegate.getVariable("process_id");
+        Object processId = delegate.getVariable("call_process");
         log.info("Prozess " + processId.toString() + " wird aufgerufen");
     }
 }
