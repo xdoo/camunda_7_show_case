@@ -74,7 +74,7 @@
           <text>&lt;=3000.0</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0bw34mw">
-          <text>"sb"</text>
+          <text>"two_eye_check"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_0qiga4g">
           <text>"no"</text>
@@ -89,14 +89,14 @@
           <text>&lt;=10000.0</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_0ga41wv">
-          <text>"sb"</text>
+          <text>"two_eye_check"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1pr3vhd">
           <text>"no"</text>
         </outputEntry>
       </rule>
       <rule id="DecisionRule_1kzfimb">
-        <description>einfach Prüfung durch Sachbearbeiter</description>
+        <description>einfache Prüfung durch Sachbearbeiter</description>
         <inputEntry id="UnaryTests_1ypxbcq">
           <text>"Los 1"</text>
         </inputEntry>
@@ -104,9 +104,69 @@
           <text>&lt;=30000.0</text>
         </inputEntry>
         <outputEntry id="LiteralExpression_1pnrqwj">
-          <text>"sb"</text>
+          <text>"two_eye_check"</text>
         </outputEntry>
         <outputEntry id="LiteralExpression_1a6z6kw">
+          <text>"no"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0opy4w1">
+        <description>4 Augen Prüfung</description>
+        <inputEntry id="UnaryTests_09uag7y">
+          <text>"Los 3"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1w9z6tv">
+          <text>&gt;3000.0</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0guhe1n">
+          <text>"four_eye_check"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_08xt6g3">
+          <text>"no"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0nxu0ch">
+        <description>4 Augen Prüfung</description>
+        <inputEntry id="UnaryTests_0gy891z">
+          <text>"Los 2"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_060kn21">
+          <text>&gt;10000.0</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0tx2lbb">
+          <text>"four_eye_check"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1n5vnhm">
+          <text>"no"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_10qt7l1">
+        <description>4 Augen Prüfung</description>
+        <inputEntry id="UnaryTests_1dk80yf">
+          <text>"Los 1"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_17ll55x">
+          <text>&gt;15000.0</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0yuflgw">
+          <text>"four_eye_check"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_14zb5ih">
+          <text>"no"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_14ommrc">
+        <description>Regeln haben nicht gegriffen. Fall wird einem Sachbearbeiter vorgelegt.</description>
+        <inputEntry id="UnaryTests_08nr2t8">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0qtlpu2">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_12w9pwk">
+          <text>"error_check"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ll8tq7">
           <text>"no"</text>
         </outputEntry>
       </rule>

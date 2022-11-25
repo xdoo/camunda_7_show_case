@@ -31,16 +31,33 @@
     {
       "values": [
         {
+          "label": "Bestellung genehmigt",
+          "value": "yes"
+        },
+        {
+          "label": "Bestellung nicht genehmigt",
+          "value": "no"
+        }
+      ],
+      "label": "Genehmigung",
+      "type": "radio",
+      "id": "Field_1jnaz09",
+      "key": "approval",
+      "defaultValue": "no"
+    },
+    {
+      "values": [
+        {
           "label": "keine zusätzliche Prüfung",
           "value": "no"
         },
         {
           "label": "4 Augen Prinzip",
-          "value": "pid_0001"
+          "value": "four_eye_check"
         },
         {
           "label": "6 Augen Prinzip",
-          "value": "pid_0002"
+          "value": "six_eye_check"
         }
       ],
       "label": "Zusätzliche Prüfungen",
