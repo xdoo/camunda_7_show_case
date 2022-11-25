@@ -37,7 +37,7 @@
         <camunda:in businessKey="#{execution.processBusinessKey}" />
         <camunda:out sourceExpression="${result}" target="result" />
         <camunda:in sourceExpression="${result}" target="result" />
-        <camunda:in source="${item}" target="payload" />
+        <camunda:in sourceExpression="${item}" target="payload" />
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_04anbvz</bpmn:incoming>
       <bpmn:outgoing>Flow_069rjky</bpmn:outgoing>
