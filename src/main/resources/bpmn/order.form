@@ -1,0 +1,54 @@
+{
+  "components": [
+    {
+      "text": "# Bestellung",
+      "type": "text",
+      "id": "Field_1rgoqtz"
+    },
+    {
+      "values": [
+        {
+          "label": "Leistung A (Los 3 | 500 €)",
+          "value": "1"
+        },
+        {
+          "label": "Leistung B (Los 3 | 3.500 €)",
+          "value": "2"
+        },
+        {
+          "label": "Leistung C (Los 2 | 1.760 €)",
+          "value": "3"
+        },
+        {
+          "label": "Leistung D (Los 1 | 20.000 €)",
+          "value": "4"
+        },
+        {
+          "label": "Leistung X (ERROR)",
+          "value": "50"
+        }
+      ],
+      "label": "Leistung bestellen",
+      "type": "select",
+      "id": "Field_0qdf2gx",
+      "key": "item",
+      "properties": {}
+    },
+    {
+      "action": "submit",
+      "label": "Bestellen",
+      "type": "button",
+      "id": "Field_0dz15w9",
+      "key": "field_08nidrp"
+    }
+  ],
+  "type": "default",
+  "id": "order_form",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.5.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.18.0",
+  "schemaVersion": 5
+}

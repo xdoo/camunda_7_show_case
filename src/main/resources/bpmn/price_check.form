@@ -1,0 +1,70 @@
+{
+  "components": [
+    {
+      "text": "# Preis-Check",
+      "type": "text",
+      "id": "Field_01hk7b5"
+    },
+    {
+      "label": "Leistung",
+      "type": "textfield",
+      "id": "Field_1nucnun",
+      "key": "name",
+      "disabled": true
+    },
+    {
+      "label": "Los",
+      "type": "textfield",
+      "id": "Field_1jou878",
+      "key": "los",
+      "disabled": true
+    },
+    {
+      "label": "Preis",
+      "type": "textfield",
+      "id": "Field_0t05y2z",
+      "key": "price",
+      "description": "Der Preis der Leistung",
+      "properties": {},
+      "disabled": true
+    },
+    {
+      "values": [
+        {
+          "label": "keine zusätzliche Prüfung",
+          "value": "no"
+        },
+        {
+          "label": "4 Augen Prinzip",
+          "value": "pid_0001"
+        },
+        {
+          "label": "6 Augen Prinzip",
+          "value": "pid_0002"
+        }
+      ],
+      "label": "Zusätzliche Prüfungen",
+      "type": "radio",
+      "id": "Field_1g2kv23",
+      "key": "call_process",
+      "description": "Muss die Bestellung von weiteren Personen geprüft werden?",
+      "defaultValue": "no"
+    },
+    {
+      "action": "submit",
+      "label": "weiter",
+      "type": "button",
+      "id": "Field_0xe7hb8",
+      "key": "field_0vtfam5"
+    }
+  ],
+  "type": "default",
+  "id": "price_check_form",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.5.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.18.0",
+  "schemaVersion": 5
+}

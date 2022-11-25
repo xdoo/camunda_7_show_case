@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="automated_order_drd" name="Automated Order DRD" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.5.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.18.0">
+  <decision id="automated_order_proof" name="Automatisierte Prüfung der Bestellung">
+    <informationRequirement id="InformationRequirement_0yurcvh">
+      <requiredInput href="#item_los" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1upep9b">
+      <requiredInput href="#item_price" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_080blum" hitPolicy="FIRST">
+      <input id="Input_1" label="Los" camunda:inputVariable="item_los">
+        <inputExpression id="InputExpression_1" typeRef="string" expressionLanguage="feel">
+          <text>item_los</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_0npgikc" label="Preis" camunda:inputVariable="item_price">
+        <inputExpression id="LiteralExpression_06awaj4" typeRef="double" expressionLanguage="feel">
+          <text>item_price</text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Prüfprozess" name="call_process" typeRef="string" />
+      <output id="OutputClause_0n6eu3e" label="Prüfergebnis" name="approved" typeRef="string" />
+      <rule id="DecisionRule_1jxcop2">
+        <description>automatisierte Prozessdurchführung</description>
+        <inputEntry id="UnaryTests_1wv2i3q">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1j9r3hm">
+          <text>&lt;=1000.0</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_058lqpx">
+          <text>"no"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0yeh1iz">
+          <text>"yes"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1eqqxom">
+        <description>automatisierte Prozessdurchführung</description>
+        <inputEntry id="UnaryTests_0rfheyu">
+          <text>"Los 2"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_06o9y6c">
+          <text>&lt;=5000.0</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_10pjkcl">
+          <text>"no"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1dzgqfz">
+          <text>"yes"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0u24gfi">
+        <description>automatisierte Prozessdurchführung</description>
+        <inputEntry id="UnaryTests_013ty45">
+          <text>"Los 1"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0v29vsm">
+          <text>&lt;=15000.0</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_148dtlk">
+          <text>"no"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1ygqcks">
+          <text>"yes"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_111530w">
+        <description>einfache Prüfung durch Sachbearbeiter</description>
+        <inputEntry id="UnaryTests_1yrf5ud">
+          <text>"Los 3"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0s1oc9i">
+          <text>&lt;=3000.0</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0bw34mw">
+          <text>"sb"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_0qiga4g">
+          <text>"no"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_0026hzr">
+        <description>einfache Prüfung durch Sachbearbeiter</description>
+        <inputEntry id="UnaryTests_17bonj5">
+          <text>"Los 2"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_05bvu2j">
+          <text>&lt;=10000.0</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0ga41wv">
+          <text>"sb"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1pr3vhd">
+          <text>"no"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1kzfimb">
+        <description>einfach Prüfung durch Sachbearbeiter</description>
+        <inputEntry id="UnaryTests_1ypxbcq">
+          <text>"Los 1"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1m9ekto">
+          <text>&lt;=30000.0</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_1pnrqwj">
+          <text>"sb"</text>
+        </outputEntry>
+        <outputEntry id="LiteralExpression_1a6z6kw">
+          <text>"no"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="item_los" name="Los" />
+  <inputData id="item_price" name="Preis" />
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="automated_order_proof">
+        <dc:Bounds height="80" width="180" x="160" y="210" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_05rl031" dmnElementRef="item_los">
+        <dc:Bounds height="45" width="125" x="167" y="87" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_1i0gcad" dmnElementRef="item_price">
+        <dc:Bounds height="45" width="125" x="157" y="367" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_0ppolik" dmnElementRef="InformationRequirement_0yurcvh">
+        <di:waypoint x="230" y="132" />
+        <di:waypoint x="250" y="190" />
+        <di:waypoint x="250" y="210" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_1q1v631" dmnElementRef="InformationRequirement_1upep9b">
+        <di:waypoint x="220" y="367" />
+        <di:waypoint x="250" y="310" />
+        <di:waypoint x="250" y="290" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>

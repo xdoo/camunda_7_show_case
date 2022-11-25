@@ -1,0 +1,31 @@
+{
+  "components": [
+    {
+      "text": "# Ergebnis der Prüfung",
+      "type": "text",
+      "id": "Field_012aggz"
+    },
+    {
+      "label": "Ergebnis",
+      "type": "textfield",
+      "id": "Field_1wdfbun",
+      "key": "result"
+    },
+    {
+      "action": "submit",
+      "label": "Abschließen",
+      "type": "button",
+      "id": "Field_10ub0qv",
+      "key": "field_0bxerrm"
+    }
+  ],
+  "type": "default",
+  "id": "result_form",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.5.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.18.0",
+  "schemaVersion": 5
+}

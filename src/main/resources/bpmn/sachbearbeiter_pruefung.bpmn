@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1b54pah" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.5.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.18.0">
+  <bpmn:process id="Process_0jkohy3" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_0us7fm8</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_0xnjry7">
+      <bpmn:incoming>Flow_0hb1ozy</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0us7fm8" sourceRef="StartEvent_1" targetRef="Activity_0guvd0i" />
+    <bpmn:userTask id="Activity_0guvd0i" name="Preis prüfen" camunda:formRef="price_check_form" camunda:formRefBinding="latest">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="price">${item_price}</camunda:inputParameter>
+          <camunda:inputParameter name="name">${item_name}</camunda:inputParameter>
+          <camunda:inputParameter name="los">${item_los}</camunda:inputParameter>
+          <camunda:outputParameter name="call_process" />
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0us7fm8</bpmn:incoming>
+      <bpmn:outgoing>Flow_0qg3sca</bpmn:outgoing>
+    </bpmn:userTask>
+    <bpmn:sequenceFlow id="Flow_0qg3sca" sourceRef="Activity_0guvd0i" targetRef="Event_0d1pr2s" />
+    <bpmn:sequenceFlow id="Flow_0hb1ozy" sourceRef="Event_0d1pr2s" targetRef="Event_0xnjry7" />
+    <bpmn:intermediateThrowEvent id="Event_0d1pr2s" name="Ergebnis senden" camunda:asyncAfter="true">
+      <bpmn:incoming>Flow_0qg3sca</bpmn:incoming>
+      <bpmn:outgoing>Flow_0hb1ozy</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0mw33eo" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:textAnnotation id="TextAnnotation_1g63fmx">
+      <bpmn:text>Das ist nur nötig, wenn der aufrufende Prozess auf eine Antwort wartet</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_19c2yzn" sourceRef="Event_0d1pr2s" targetRef="TextAnnotation_1g63fmx" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="Process_0jkohy3">
+      <bpmndi:BPMNShape id="TextAnnotation_1g63fmx_di" bpmnElement="TextAnnotation_1g63fmx">
+        <dc:Bounds x="490" y="80" width="130" height="77" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1gzd3d0_di" bpmnElement="Activity_0guvd0i">
+        <dc:Bounds x="290" y="157" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="192" y="179" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0xnjry7_di" bpmnElement="Event_0xnjry7">
+        <dc:Bounds x="542" y="179" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1e5166g_di" bpmnElement="Event_0d1pr2s">
+        <dc:Bounds x="442" y="179" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="419" y="222" width="83" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_19c2yzn_di" bpmnElement="Association_19c2yzn">
+        <di:waypoint x="471" y="183" />
+        <di:waypoint x="491" y="157" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0us7fm8_di" bpmnElement="Flow_0us7fm8">
+        <di:waypoint x="228" y="197" />
+        <di:waypoint x="290" y="197" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0qg3sca_di" bpmnElement="Flow_0qg3sca">
+        <di:waypoint x="390" y="197" />
+        <di:waypoint x="442" y="197" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0hb1ozy_di" bpmnElement="Flow_0hb1ozy">
+        <di:waypoint x="478" y="197" />
+        <di:waypoint x="542" y="197" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

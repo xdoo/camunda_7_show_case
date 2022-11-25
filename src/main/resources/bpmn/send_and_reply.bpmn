@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_16inmx5" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.5.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.18.0">
+  <bpmn:process id="send_and_reply" name="Senden und Empfangen" isExecutable="true" camunda:isStartableInTasklist="false">
+    <bpmn:extensionElements />
+    <bpmn:endEvent id="Event_01jrhcg">
+      <bpmn:incoming>Flow_0b2fn8s</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_1eod6qi" sourceRef="StartEvent_1" targetRef="Gateway_0gzftkl" />
+    <bpmn:exclusiveGateway id="Gateway_0gzftkl" default="Flow_0crro4s">
+      <bpmn:incoming>Flow_1eod6qi</bpmn:incoming>
+      <bpmn:outgoing>Flow_0uuqvom</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0crro4s</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0uuqvom" sourceRef="Gateway_0gzftkl" targetRef="Gateway_0naw26c">
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${result.call_process== "no"}</bpmn:conditionExpression>
+    </bpmn:sequenceFlow>
+    <bpmn:exclusiveGateway id="Gateway_0naw26c">
+      <bpmn:incoming>Flow_0uuqvom</bpmn:incoming>
+      <bpmn:incoming>Flow_10i3ngq</bpmn:incoming>
+      <bpmn:outgoing>Flow_0b2fn8s</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:sequenceFlow id="Flow_0b2fn8s" sourceRef="Gateway_0naw26c" targetRef="Event_01jrhcg" />
+    <bpmn:sequenceFlow id="Flow_0crro4s" sourceRef="Gateway_0gzftkl" targetRef="call_process" />
+    <bpmn:sequenceFlow id="Flow_1gxvlz8" sourceRef="call_process" targetRef="wait_for_answer" />
+    <bpmn:sequenceFlow id="Flow_10i3ngq" sourceRef="wait_for_answer" targetRef="Gateway_0naw26c" />
+    <bpmn:intermediateThrowEvent id="call_process" name="Prozess aufrufen" camunda:asyncAfter="true">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="call_process">${result.call_process}</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0crro4s</bpmn:incoming>
+      <bpmn:outgoing>Flow_1gxvlz8</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_11nmgcj" messageRef="Message_1bvpokc" camunda:delegateExpression="${genericProcessStarter}" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:intermediateCatchEvent id="wait_for_answer" name="Auf Antwort warten">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:outputParameter name="result">
+            <camunda:map />
+          </camunda:outputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1gxvlz8</bpmn:incoming>
+      <bpmn:outgoing>Flow_10i3ngq</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0gqwikl" messageRef="Message_110fb5g" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:startEvent id="StartEvent_1">
+      <bpmn:outgoing>Flow_1eod6qi</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:textAnnotation id="TextAnnotation_026kngj">
+      <bpmn:text>Wenn kein Prozess aufgerufen werden soll, dann werden die Werte einfach nur durchgereicht.</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0wa8jzw" sourceRef="Flow_0uuqvom" targetRef="TextAnnotation_026kngj" />
+    <bpmn:textAnnotation id="TextAnnotation_14py88f">
+      <bpmn:text>Prozess wird über ein Delegate aufgerufen (da kann dann später eine Prozess Engine dahinter stehen)</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_1bweru9" sourceRef="call_process" targetRef="TextAnnotation_14py88f" />
+    <bpmn:textAnnotation id="TextAnnotation_01m3sqh">
+      <bpmn:text>Es wird auf die Antwort des aufgerufenen Prozesses gewartet. Dieser Prozess sollte ein Ergebnis als Map zurück geben.</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association_0uuqj9h" sourceRef="wait_for_answer" targetRef="TextAnnotation_01m3sqh" />
+  </bpmn:process>
+  <bpmn:message id="Message_110fb5g" name="wait_for_answer" />
+  <bpmn:message id="Message_1bvpokc" name="call_process" />
+  <bpmn:message id="Message_2bi325r" name="send_and_reply" />
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="send_and_reply">
+      <bpmndi:BPMNShape id="TextAnnotation_026kngj_di" bpmnElement="TextAnnotation_026kngj">
+        <dc:Bounds x="450" y="410" width="145" height="90" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_14py88f_di" bpmnElement="TextAnnotation_14py88f">
+        <dc:Bounds x="160" y="80" width="172" height="70" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="TextAnnotation_01m3sqh_di" bpmnElement="TextAnnotation_01m3sqh">
+        <dc:Bounds x="540" y="100" width="160" height="90" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_01jrhcg_di" bpmnElement="Event_01jrhcg">
+        <dc:Bounds x="642" y="322" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0gzftkl_di" bpmnElement="Gateway_0gzftkl" isMarkerVisible="true">
+        <dc:Bounds x="305" y="315" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_0naw26c_di" bpmnElement="Gateway_0naw26c" isMarkerVisible="true">
+        <dc:Bounds x="545" y="315" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ew012h_di" bpmnElement="call_process">
+        <dc:Bounds x="382" y="232" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="358" y="275" width="84" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_17683ak_di" bpmnElement="wait_for_answer">
+        <dc:Bounds x="482" y="232" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="472" y="275" width="57" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1nbv0fe_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="212" y="322" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Association_0wa8jzw_di" bpmnElement="Association_0wa8jzw">
+        <di:waypoint x="450" y="340" />
+        <di:waypoint x="493" y="410" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_1bweru9_di" bpmnElement="Association_1bweru9">
+        <di:waypoint x="386" y="239" />
+        <di:waypoint x="277" y="150" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Association_0uuqj9h_di" bpmnElement="Association_0uuqj9h">
+        <di:waypoint x="510" y="235" />
+        <di:waypoint x="540" y="190" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1eod6qi_di" bpmnElement="Flow_1eod6qi">
+        <di:waypoint x="248" y="340" />
+        <di:waypoint x="305" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0uuqvom_di" bpmnElement="Flow_0uuqvom">
+        <di:waypoint x="355" y="340" />
+        <di:waypoint x="545" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0b2fn8s_di" bpmnElement="Flow_0b2fn8s">
+        <di:waypoint x="595" y="340" />
+        <di:waypoint x="642" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0crro4s_di" bpmnElement="Flow_0crro4s">
+        <di:waypoint x="330" y="315" />
+        <di:waypoint x="330" y="250" />
+        <di:waypoint x="382" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1gxvlz8_di" bpmnElement="Flow_1gxvlz8">
+        <di:waypoint x="418" y="250" />
+        <di:waypoint x="482" y="250" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10i3ngq_di" bpmnElement="Flow_10i3ngq">
+        <di:waypoint x="518" y="250" />
+        <di:waypoint x="570" y="250" />
+        <di:waypoint x="570" y="315" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
