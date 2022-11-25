@@ -37,9 +37,7 @@
     <bpmn:intermediateCatchEvent id="wait_for_answer" name="Auf Antwort warten">
       <bpmn:extensionElements>
         <camunda:inputOutput>
-          <camunda:outputParameter name="result">
-            <camunda:map />
-          </camunda:outputParameter>
+          <camunda:outputParameter name="result">${result}</camunda:outputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1gxvlz8</bpmn:incoming>
