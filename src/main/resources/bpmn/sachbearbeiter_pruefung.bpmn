@@ -11,9 +11,9 @@
     <bpmn:userTask id="Activity_0guvd0i" name="Preis prüfen" camunda:formRef="price_check_form" camunda:formRefBinding="latest">
       <bpmn:extensionElements>
         <camunda:inputOutput>
-          <camunda:inputParameter name="price">${item_price}</camunda:inputParameter>
-          <camunda:inputParameter name="name">${item_name}</camunda:inputParameter>
-          <camunda:inputParameter name="los">${item_los}</camunda:inputParameter>
+          <camunda:inputParameter name="name">${payload.item_name}</camunda:inputParameter>
+          <camunda:inputParameter name="los">${payload.item_los}</camunda:inputParameter>
+          <camunda:inputParameter name="price">${payload.item_price}</camunda:inputParameter>
           <camunda:outputParameter name="call_process" />
         </camunda:inputOutput>
       </bpmn:extensionElements>

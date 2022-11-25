@@ -33,22 +33,22 @@ public class ItemLookupService implements JavaDelegate {
         // Das wäre normalerweise eine DB Query oder Service Aufruf.
         switch (item) {
             case 1:
-                result.put(LOS, "los 3");
+                result.put(LOS, "Los 3");
                 result.put(NAME, "Leistung A");
                 result.put(PRICE, 500.0);
                 break;
             case 2:
-                result.put(LOS, "los 3");
+                result.put(LOS, "Los 3");
                 result.put(NAME, "Leistung B");
-                result.put(PRICE, 3500.0);
+                result.put(PRICE, 2500.0);
                 break;
             case 3:
-                result.put(LOS, "los 2");
+                result.put(LOS, "Los 2");
                 result.put(NAME, "Leistung C");
                 result.put(PRICE, 1760.0);
                 break;
             case 4:
-                result.put(LOS, "los 1");
+                result.put(LOS, "Los 1");
                 result.put(NAME, "Leistung D");
                 result.put(PRICE, 20000.0);
                 break;
