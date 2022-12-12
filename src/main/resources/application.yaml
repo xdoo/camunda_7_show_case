@@ -12,3 +12,11 @@ spring:
     username: sa
     password: password
     driverClassName: org.h2.Driver
+
+
+strapi:
+  token: 7d7da039d52cbe9e2ac9fa730e0ae9257717dc209b956ae2efcafeb35671bd1725c08388f42bf081ba6c3bf20d0ae6b250272a201b15cb39101aa2fbb9baf21271caf616d20439a62ccd181a7c6a18f1b71f9dfa4f77351453d3c595fbf1710b56f36c7b5c39369a0e7c78b6e7a235abba789560e940cfefa0a455326037f7eb
+  url:
+    api: http://localhost:1337/api/
+    orders: http://localhost:1337/api/orders/
+    infos: http://localhost:1337/api/infos/
