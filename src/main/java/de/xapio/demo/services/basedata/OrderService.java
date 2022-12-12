@@ -16,12 +16,12 @@ import java.time.LocalDateTime;
 @Service @Slf4j
 public class OrderService implements JavaDelegate {
 
-    public final static String ITEMS = "items";
+    public final static String ITEMS = "item_ids";
     public final static String ORGANISATION = "organisation";
 
     private final RestTemplate restTemplate;
 
-    @Value("${strapi.url.orders")
+    @Value("${strapi.url.orders}")
     private String url;
 
     public OrderService(RestTemplate restTemplate) {
@@ -37,7 +37,8 @@ public class OrderService implements JavaDelegate {
         data.put("order_date", LocalDateTime.now().toString());
         data.put("order_id", RandomStringUtils.randomAlphanumeric(20));
         // map vars from process
-        data.put("items", new JSONArray(delegate.getVariable(ITEMS)));
+        String items = (String) delegate.getVariable(ITEMS);
+        data.put("items", new JSONArray(items));
         data.put("organisation", delegate.getVariable(ORGANISATION));
 
         JSONObject order = new JSONObject();

@@ -1,0 +1,79 @@
+{
+  "components": [
+    {
+      "text": "# BayKom Bestellung\n\nDas ist ein Dummy Formular, um eine Bestellung aus dem Portal ür Abrufberechtigte zu simulieren.",
+      "type": "text",
+      "id": "Field_0jlweyh"
+    },
+    {
+      "values": [
+        {
+          "label": "Test Abrufberechtigter A",
+          "value": "1"
+        },
+        {
+          "label": "Test Abrufberechtigter B",
+          "value": "2"
+        }
+      ],
+      "label": "Organisation",
+      "type": "select",
+      "id": "organisation",
+      "key": "organisation",
+      "defaultValue": "1"
+    },
+    {
+      "values": [
+        {
+          "label": "Leistung A (Los 1 | 34€)",
+          "value": "2"
+        },
+        {
+          "label": "Leistung B (Los 1 | 24€)",
+          "value": "1"
+        },
+        {
+          "label": "Leistung C (Los 2 | 1.200€)",
+          "value": "3"
+        },
+        {
+          "label": "Leistung D (Los 3 | 7.000€)",
+          "value": "4"
+        },
+        {
+          "label": "Leistung E (Los 3 | 25.000€)",
+          "value": "5"
+        },
+        {
+          "label": "Leistung F (Los 4 | 14.000€)",
+          "value": "6"
+        },
+        {
+          "label": "Leistung G (Los 1 | 150€)",
+          "value": "7"
+        }
+      ],
+      "label": "Leistungen",
+      "type": "checklist",
+      "id": "items",
+      "key": "item_ids",
+      "properties": {}
+    },
+    {
+      "action": "submit",
+      "label": "Bestellen",
+      "type": "button",
+      "id": "Field_100kerh",
+      "key": "field_08vylgj"
+    }
+  ],
+  "type": "default",
+  "id": "order_form_extended",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.5.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.18.0",
+  "schemaVersion": 5
+}
