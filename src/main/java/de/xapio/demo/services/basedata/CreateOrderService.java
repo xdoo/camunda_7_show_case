@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import java.time.LocalDateTime;
 
 @Service @Slf4j
-public class OrderService implements JavaDelegate {
+public class CreateOrderService implements JavaDelegate {
 
     public final static String ITEMS = "item_ids";
     public final static String ORGANISATION = "organisation";
@@ -24,7 +24,7 @@ public class OrderService implements JavaDelegate {
     @Value("${strapi.url.orders}")
     private String url;
 
-    public OrderService(RestTemplate restTemplate) {
+    public CreateOrderService(RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
     }
 
@@ -35,7 +35,8 @@ public class OrderService implements JavaDelegate {
         // data
         JSONObject data = new JSONObject();
         data.put("order_date", LocalDateTime.now().toString());
-        data.put("order_id", RandomStringUtils.randomAlphanumeric(20));
+        String orderID = RandomStringUtils.randomAlphanumeric(20);
+        data.put("order_id", orderID);
         // map vars from process
         String items = (String) delegate.getVariable(ITEMS);
         data.put("items", new JSONArray(items));
@@ -49,6 +50,7 @@ public class OrderService implements JavaDelegate {
         HttpEntity<String> request = new HttpEntity<>(order.toString());
 
         String result = this.restTemplate.postForObject(this.url, request, String.class);
+        delegate.setProcessBusinessKey(orderID);
         log.info(result);
     }
 }

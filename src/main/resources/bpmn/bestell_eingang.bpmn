@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:camunda="http://camunda.org/schema/1.0/bpmn" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_00krc9g" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.5.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.18.0">
+  <bpmn:process id="order_in" name="bestellleingang" isExecutable="true">
+    <bpmn:serviceTask id="send_order" name="Bestellung speichern" camunda:delegateExpression="${createOrderService}">
+      <bpmn:incoming>Flow_0ysyny0</bpmn:incoming>
+      <bpmn:outgoing>Flow_046prlf</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0ysyny0" sourceRef="StartEvent_1" targetRef="send_order" />
+    <bpmn:startEvent id="StartEvent_1" name="Bestellung empfangen" camunda:formRef="order_form_extended" camunda:formRefBinding="latest">
+      <bpmn:outgoing>Flow_0ysyny0</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_12pq0i8" />
+    </bpmn:startEvent>
+    <bpmn:subProcess id="item_loop" name="Leistungen bearbeiten">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="item_ids">${item_ids}</camunda:inputParameter>
+          <camunda:inputParameter name="organisation">${organisation}</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_046prlf</bpmn:incoming>
+      <bpmn:multiInstanceLoopCharacteristics isSequential="true" camunda:asyncBefore="true" camunda:collection="${item_ids}" camunda:elementVariable="item_id" />
+      <bpmn:startEvent id="Event_1nmbpkd">
+        <bpmn:outgoing>Flow_1vpaykw</bpmn:outgoing>
+      </bpmn:startEvent>
+      <bpmn:sequenceFlow id="Flow_1vpaykw" sourceRef="Event_1nmbpkd" targetRef="Activity_1rktbu7" />
+      <bpmn:serviceTask id="Activity_1rktbu7" name="Leistungsdetails laden">
+        <bpmn:extensionElements>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="item_id">${item_id}</camunda:inputParameter>
+            <camunda:outputParameter name="item">
+              <camunda:map />
+            </camunda:outputParameter>
+          </camunda:inputOutput>
+        </bpmn:extensionElements>
+        <bpmn:incoming>Flow_1vpaykw</bpmn:incoming>
+      </bpmn:serviceTask>
+    </bpmn:subProcess>
+    <bpmn:sequenceFlow id="Flow_046prlf" sourceRef="send_order" targetRef="item_loop" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="order_in">
+      <bpmndi:BPMNShape id="Activity_0k3c4pj_di" bpmnElement="send_order">
+        <dc:Bounds x="270" y="160" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1rd4i61_di" bpmnElement="StartEvent_1">
+        <dc:Bounds x="162" y="182" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="153" y="225" width="56" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_14dhnai_di" bpmnElement="item_loop" isExpanded="true">
+        <dc:Bounds x="440" y="80" width="480" height="240" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1nmbpkd_di" bpmnElement="Event_1nmbpkd">
+        <dc:Bounds x="480" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0p09qm7_di" bpmnElement="Activity_1rktbu7">
+        <dc:Bounds x="560" y="160" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_1vpaykw_di" bpmnElement="Flow_1vpaykw">
+        <di:waypoint x="516" y="200" />
+        <di:waypoint x="560" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ysyny0_di" bpmnElement="Flow_0ysyny0">
+        <di:waypoint x="198" y="200" />
+        <di:waypoint x="270" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_046prlf_di" bpmnElement="Flow_046prlf">
+        <di:waypoint x="370" y="200" />
+        <di:waypoint x="440" y="200" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
