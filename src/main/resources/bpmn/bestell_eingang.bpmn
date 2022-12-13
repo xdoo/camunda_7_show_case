@@ -15,12 +15,12 @@
       <bpmn:extensionElements>
         <camunda:inputOutput>
           <camunda:inputParameter name="organisation">${organisation}</camunda:inputParameter>
-          <camunda:inputParameter name="items">${items}</camunda:inputParameter>
+          <camunda:inputParameter name="item_ids">${item_ids}</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_046prlf</bpmn:incoming>
       <bpmn:outgoing>Flow_0hx26pd</bpmn:outgoing>
-      <bpmn:multiInstanceLoopCharacteristics isSequential="true" camunda:asyncBefore="true" camunda:collection="${items}" camunda:elementVariable="item_id" />
+      <bpmn:multiInstanceLoopCharacteristics isSequential="true" camunda:asyncBefore="true" camunda:collection="${item_ids}" camunda:elementVariable="item_id" />
       <bpmn:startEvent id="start_loop_items">
         <bpmn:outgoing>Flow_1vpaykw</bpmn:outgoing>
       </bpmn:startEvent>

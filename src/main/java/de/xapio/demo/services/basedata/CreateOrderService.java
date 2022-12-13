@@ -61,7 +61,7 @@ public class CreateOrderService implements JavaDelegate {
                     .map(n -> n.stringValue())
                     .map(s -> Ints.tryParse(s))
                     .collect(Collectors.toList());
-            delegate.setVariable("items", ids);
+            delegate.setVariable(ITEM_IDS, ids);
         } else {
             log.error("IDs der Leistungen nicht als Array übergeben.");
         }
