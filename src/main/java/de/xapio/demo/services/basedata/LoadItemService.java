@@ -23,9 +23,9 @@ public class LoadItemService implements JavaDelegate {
 
     @Override
     public void execute(DelegateExecution delegate) throws Exception {
-        String itemId = delegate.getVariable(ITEM_ID).toString();
+        Object iid = delegate.getVariable(ITEM_ID);
 
-        String uri = this.url + itemId + "?populated=%2A";
+        String uri = this.url + iid + "?populated=%2A";
 
         String result = this.restTemplate.getForObject(uri, String.class);
         log.info(result);
