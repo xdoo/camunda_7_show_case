@@ -1,0 +1,47 @@
+{
+  "components": [
+    {
+      "text": "# Bestellung",
+      "type": "text",
+      "id": "Field_1sdts0f"
+    },
+    {
+      "values": [
+        {
+          "label": "Test Abrufberechtigter A",
+          "value": "1"
+        },
+        {
+          "label": "Test Abrufberechtgter B",
+          "value": "2"
+        }
+      ],
+      "label": "Organsitaion",
+      "type": "select",
+      "id": "Field_0d2udcg",
+      "key": "organisation"
+    },
+    {
+      "label": "Leistungen",
+      "type": "textfield",
+      "id": "Field_16stbsm",
+      "key": "item_ids"
+    },
+    {
+      "action": "submit",
+      "label": "Bestellen",
+      "type": "button",
+      "id": "Field_0cdo5jp",
+      "key": "field_11w9uy1"
+    }
+  ],
+  "type": "default",
+  "id": "test_order_form",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.5.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.18.0",
+  "schemaVersion": 5
+}
