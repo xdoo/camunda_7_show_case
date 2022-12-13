@@ -1,0 +1,31 @@
+{
+  "components": [
+    {
+      "text": "# Los",
+      "type": "text",
+      "id": "Field_0w87gcc"
+    },
+    {
+      "label": "Los der Leistung",
+      "type": "textfield",
+      "id": "Field_0zsu3fq",
+      "key": "item_lot"
+    },
+    {
+      "action": "submit",
+      "label": "Weiter",
+      "type": "button",
+      "id": "Field_0x3stnx",
+      "key": "field_152kwex"
+    }
+  ],
+  "type": "default",
+  "id": "lot_result_form",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.5.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.18.0",
+  "schemaVersion": 5
+}

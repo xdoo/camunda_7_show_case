@@ -21,3 +21,6 @@ strapi:
     orders: http://localhost:1337/api/orders/
     infos: http://localhost:1337/api/infos/
     items: http://localhost:1337/api/items/
+logging:
+  level:
+    org.springframework.web.client.RestTemplate: DEBUG
