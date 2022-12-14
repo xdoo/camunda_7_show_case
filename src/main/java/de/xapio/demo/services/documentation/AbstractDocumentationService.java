@@ -1,23 +1,22 @@
-package de.xapio.demo.config;
+package de.xapio.demo.services.documentation;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.boot.web.client.RestTemplateBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
-@Configuration
-public class RestConfig {
+import javax.annotation.PostConstruct;
 
+abstract public class AbstractDocumentationService implements JavaDelegate {
 
+    protected  RestTemplate restTemplate;
 
-    @Bean(name = "strapiRestTemplate")
-    public RestTemplate strapiRestTemplate() {
+    @PostConstruct
+    private void init() {
         RestTemplate restTemplate = new RestTemplateBuilder()
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
                 .build();
-        return restTemplate;
+        this.restTemplate = restTemplate;
     }
 }

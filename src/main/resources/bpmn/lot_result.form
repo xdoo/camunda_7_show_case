@@ -1,27 +1,26 @@
 {
   "components": [
     {
-      "text": "# Ergebnis der Prüfung",
+      "text": "# Los",
       "type": "text",
-      "id": "Field_012aggz"
+      "id": "Field_0w87gcc"
     },
     {
-      "label": "Ergebnis",
+      "label": "Los der Leistung",
       "type": "textfield",
-      "id": "Field_1wdfbun",
-      "key": "result",
-      "properties": {}
+      "id": "Field_0zsu3fq",
+      "key": "item_lot"
     },
     {
       "action": "submit",
-      "label": "Abschließen",
+      "label": "Weiter",
       "type": "button",
-      "id": "Field_10ub0qv",
-      "key": "field_0bxerrm"
+      "id": "Field_0x3stnx",
+      "key": "field_152kwex"
     }
   ],
   "type": "default",
-  "id": "result_form",
+  "id": "lot_result_form",
   "exporter": {
     "name": "Camunda Modeler",
     "version": "5.5.0"

@@ -14,11 +14,13 @@
     <bpmn:subProcess id="item_loop" name="Leistungen bearbeiten">
       <bpmn:extensionElements>
         <camunda:inputOutput>
-          <camunda:inputParameter name="organisation">${organisation}</camunda:inputParameter>
+          <camunda:inputParameter name="org_id">${organisation}</camunda:inputParameter>
           <camunda:inputParameter name="item_ids">${item_ids}</camunda:inputParameter>
+          <camunda:inputParameter name="org_address">${org_address}</camunda:inputParameter>
+          <camunda:inputParameter name="org_type">${org_type}</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_046prlf</bpmn:incoming>
+      <bpmn:incoming>Flow_1215h00</bpmn:incoming>
       <bpmn:outgoing>Flow_0hx26pd</bpmn:outgoing>
       <bpmn:multiInstanceLoopCharacteristics isSequential="true" camunda:asyncBefore="true" camunda:collection="${item_ids}" camunda:elementVariable="item_id" />
       <bpmn:startEvent id="start_loop_items">
@@ -29,26 +31,35 @@
         <bpmn:extensionElements>
           <camunda:inputOutput>
             <camunda:inputParameter name="item_id">${item_id}</camunda:inputParameter>
-            <camunda:outputParameter name="item">
-              <camunda:map />
-            </camunda:outputParameter>
           </camunda:inputOutput>
         </bpmn:extensionElements>
         <bpmn:incoming>Flow_1vpaykw</bpmn:incoming>
         <bpmn:outgoing>Flow_18otak1</bpmn:outgoing>
       </bpmn:serviceTask>
       <bpmn:endEvent id="Event_0lndt9w">
-        <bpmn:incoming>Flow_18otak1</bpmn:incoming>
+        <bpmn:incoming>Flow_1it995z</bpmn:incoming>
       </bpmn:endEvent>
-      <bpmn:sequenceFlow id="Flow_18otak1" sourceRef="Activity_1rktbu7" targetRef="Event_0lndt9w" />
+      <bpmn:sequenceFlow id="Flow_18otak1" sourceRef="Activity_1rktbu7" targetRef="Event_04233jw" />
+      <bpmn:sequenceFlow id="Flow_1it995z" sourceRef="Event_04233jw" targetRef="Event_0lndt9w" />
+      <bpmn:intermediateThrowEvent id="Event_04233jw" camunda:asyncBefore="true">
+        <bpmn:incoming>Flow_18otak1</bpmn:incoming>
+        <bpmn:outgoing>Flow_1it995z</bpmn:outgoing>
+        <bpmn:messageEventDefinition id="MessageEventDefinition_0jy212u" camunda:delegateExpression="${createProcessService}" />
+      </bpmn:intermediateThrowEvent>
     </bpmn:subProcess>
-    <bpmn:sequenceFlow id="Flow_046prlf" sourceRef="send_order" targetRef="item_loop" />
+    <bpmn:sequenceFlow id="Flow_046prlf" sourceRef="send_order" targetRef="Activity_14ap7rh" />
     <bpmn:endEvent id="Event_13x808a">
       <bpmn:incoming>Flow_0hx26pd</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0hx26pd" sourceRef="item_loop" targetRef="Event_13x808a" />
+    <bpmn:sequenceFlow id="Flow_1215h00" sourceRef="Activity_14ap7rh" targetRef="item_loop" />
+    <bpmn:serviceTask id="Activity_14ap7rh" name="Organisation laden" camunda:delegateExpression="${loadOrganisationService}">
+      <bpmn:incoming>Flow_046prlf</bpmn:incoming>
+      <bpmn:outgoing>Flow_1215h00</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmn:message id="Message_1mf8n69" name="Message_1mf8n69" />
+  <bpmn:message id="Message_1s2e49h" name="Message_1s2e49h" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="order_in">
       <bpmndi:BPMNShape id="Activity_0k3c4pj_di" bpmnElement="send_order">
@@ -62,28 +73,38 @@
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_13x808a_di" bpmnElement="Event_13x808a">
-        <dc:Bounds x="982" y="182" width="36" height="36" />
+        <dc:Bounds x="1152" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1scz19j_di" bpmnElement="Activity_14ap7rh">
+        <dc:Bounds x="420" y="160" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_14dhnai_di" bpmnElement="item_loop" isExpanded="true">
-        <dc:Bounds x="440" y="80" width="480" height="240" />
+        <dc:Bounds x="610" y="80" width="480" height="240" />
         <bpmndi:BPMNLabel />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1nmbpkd_di" bpmnElement="start_loop_items">
-        <dc:Bounds x="480" y="182" width="36" height="36" />
+        <dc:Bounds x="650" y="182" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0p09qm7_di" bpmnElement="Activity_1rktbu7">
-        <dc:Bounds x="560" y="160" width="100" height="80" />
+        <dc:Bounds x="730" y="160" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0lndt9w_di" bpmnElement="Event_0lndt9w">
-        <dc:Bounds x="822" y="182" width="36" height="36" />
+        <dc:Bounds x="992" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_01f1dvj_di" bpmnElement="Event_04233jw">
+        <dc:Bounds x="902" y="182" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1vpaykw_di" bpmnElement="Flow_1vpaykw">
-        <di:waypoint x="516" y="200" />
-        <di:waypoint x="560" y="200" />
+        <di:waypoint x="686" y="200" />
+        <di:waypoint x="730" y="200" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_18otak1_di" bpmnElement="Flow_18otak1">
-        <di:waypoint x="660" y="200" />
-        <di:waypoint x="822" y="200" />
+        <di:waypoint x="830" y="200" />
+        <di:waypoint x="902" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1it995z_di" bpmnElement="Flow_1it995z">
+        <di:waypoint x="938" y="200" />
+        <di:waypoint x="992" y="200" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0ysyny0_di" bpmnElement="Flow_0ysyny0">
         <di:waypoint x="198" y="200" />
@@ -91,11 +112,15 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_046prlf_di" bpmnElement="Flow_046prlf">
         <di:waypoint x="370" y="200" />
-        <di:waypoint x="440" y="200" />
+        <di:waypoint x="420" y="200" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0hx26pd_di" bpmnElement="Flow_0hx26pd">
-        <di:waypoint x="920" y="200" />
-        <di:waypoint x="982" y="200" />
+        <di:waypoint x="1090" y="200" />
+        <di:waypoint x="1152" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1215h00_di" bpmnElement="Flow_1215h00">
+        <di:waypoint x="520" y="200" />
+        <di:waypoint x="610" y="200" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
