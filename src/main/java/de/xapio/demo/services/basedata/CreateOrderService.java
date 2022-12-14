@@ -7,10 +7,14 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.spin.json.SpinJsonNode;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -23,15 +27,14 @@ public class CreateOrderService implements JavaDelegate {
     public final static String ITEM_IDS = "item_ids";
     public final static String ORGANISATION = "organisation";
 
-    private final RestTemplate restTemplate;
+    private RestTemplate restTemplate;
 
     @Value("${strapi.url.orders}")
     private String url;
+    @Value("${strapi.token.orders}")
+    private String token;
 
-    public CreateOrderService(RestTemplate restTemplate) {
-        this.restTemplate = restTemplate;
-    }
-
+    // HACK 4 DEMO! no error handling, no beans,...
     @Override
     public void execute(DelegateExecution delegate) throws Exception {
 
@@ -50,8 +53,6 @@ public class CreateOrderService implements JavaDelegate {
 
         // create http request
         HttpEntity<String> request = new HttpEntity<>(order);
-
-        // make http request
         String result = this.restTemplate.postForObject(this.url, request, String.class);
         delegate.setProcessBusinessKey(orderID);
 
@@ -66,5 +67,14 @@ public class CreateOrderService implements JavaDelegate {
             log.error("IDs der Leistungen nicht als Array übergeben.");
         }
         log.info(result);
+    }
+
+    @PostConstruct
+    private void init() {
+        RestTemplate restTemplate = new RestTemplateBuilder()
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
+                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                .build();
+        this.restTemplate = restTemplate;
     }
 }

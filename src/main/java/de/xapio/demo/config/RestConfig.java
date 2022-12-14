@@ -11,16 +11,13 @@ import org.springframework.web.client.RestTemplate;
 @Configuration
 public class RestConfig {
 
-    @Value("${strapi.token}")
-    private String token;
 
-    @Bean
-    public RestTemplate restTemplate() {
+
+    @Bean(name = "strapiRestTemplate")
+    public RestTemplate strapiRestTemplate() {
         RestTemplate restTemplate = new RestTemplateBuilder()
                 .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + this.token)
                 .build();
         return restTemplate;
     }
-
 }

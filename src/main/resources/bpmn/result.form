@@ -9,7 +9,8 @@
       "label": "Ergebnis",
       "type": "textfield",
       "id": "Field_1wdfbun",
-      "key": "result"
+      "key": "result",
+      "properties": {}
     },
     {
       "action": "submit",
