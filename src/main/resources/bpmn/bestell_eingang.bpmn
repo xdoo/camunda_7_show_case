@@ -14,8 +14,10 @@
     <bpmn:subProcess id="item_loop" name="Leistungen bearbeiten">
       <bpmn:extensionElements>
         <camunda:inputOutput>
-          <camunda:inputParameter name="organisation">${organisation}</camunda:inputParameter>
+          <camunda:inputParameter name="org_id">${organisation}</camunda:inputParameter>
           <camunda:inputParameter name="item_ids">${item_ids}</camunda:inputParameter>
+          <camunda:inputParameter name="org_address">${org_address}</camunda:inputParameter>
+          <camunda:inputParameter name="org_type">${org_type}</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
       <bpmn:incoming>Flow_1215h00</bpmn:incoming>
