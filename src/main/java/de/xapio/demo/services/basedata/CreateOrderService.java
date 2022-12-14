@@ -4,17 +4,11 @@ import com.google.common.primitives.Ints;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
-import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.spin.json.SpinJsonNode;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -22,17 +16,13 @@ import java.util.stream.Collectors;
 import static org.camunda.spin.Spin.JSON;
 
 @Service @Slf4j
-public class CreateOrderService implements JavaDelegate {
+public class CreateOrderService extends AbstractBasedataService {
 
     public final static String ITEM_IDS = "item_ids";
     public final static String ORGANISATION = "organisation";
 
-    private RestTemplate restTemplate;
-
     @Value("${strapi.url.orders}")
     private String url;
-    @Value("${strapi.token.orders}")
-    private String token;
 
     // HACK 4 DEMO! no error handling, no beans,...
     @Override
@@ -67,14 +57,5 @@ public class CreateOrderService implements JavaDelegate {
             log.error("IDs der Leistungen nicht als Array übergeben.");
         }
         log.info(result);
-    }
-
-    @PostConstruct
-    private void init() {
-        RestTemplate restTemplate = new RestTemplateBuilder()
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .defaultHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-                .build();
-        this.restTemplate = restTemplate;
     }
 }

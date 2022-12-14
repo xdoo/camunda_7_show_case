@@ -5,26 +5,18 @@ import de.xapio.demo.model.DocAtts;
 import de.xapio.demo.services.basedata.LoadItemService;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
-import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.spin.SpinList;
 import org.camunda.spin.json.SpinJsonNode;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import javax.annotation.PostConstruct;
 import java.time.LocalDateTime;
 
 import static org.camunda.spin.Spin.JSON;
 
 @Service @Slf4j
-public class CreateProcessService implements JavaDelegate {
-
-    private RestTemplate restTemplate;
+public class CreateProcessService extends AbstractDocumentationService {
 
     @Value("${elastic.url}")
     private String url;
@@ -60,13 +52,5 @@ public class CreateProcessService implements JavaDelegate {
         String result = this.restTemplate.postForObject(uri, request, String.class);
 
         log.info(result);
-    }
-
-    @PostConstruct
-    private void init() {
-        RestTemplate restTemplate = new RestTemplateBuilder()
-                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-                .build();
-        this.restTemplate = restTemplate;
     }
 }

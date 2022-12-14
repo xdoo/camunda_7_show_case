@@ -18,7 +18,7 @@
           <camunda:inputParameter name="item_ids">${item_ids}</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_046prlf</bpmn:incoming>
+      <bpmn:incoming>Flow_1215h00</bpmn:incoming>
       <bpmn:outgoing>Flow_0hx26pd</bpmn:outgoing>
       <bpmn:multiInstanceLoopCharacteristics isSequential="true" camunda:asyncBefore="true" camunda:collection="${item_ids}" camunda:elementVariable="item_id" />
       <bpmn:startEvent id="start_loop_items">
@@ -45,11 +45,16 @@
         <bpmn:messageEventDefinition id="MessageEventDefinition_0jy212u" camunda:delegateExpression="${createProcessService}" />
       </bpmn:intermediateThrowEvent>
     </bpmn:subProcess>
-    <bpmn:sequenceFlow id="Flow_046prlf" sourceRef="send_order" targetRef="item_loop" />
+    <bpmn:sequenceFlow id="Flow_046prlf" sourceRef="send_order" targetRef="Activity_14ap7rh" />
     <bpmn:endEvent id="Event_13x808a">
       <bpmn:incoming>Flow_0hx26pd</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0hx26pd" sourceRef="item_loop" targetRef="Event_13x808a" />
+    <bpmn:sequenceFlow id="Flow_1215h00" sourceRef="Activity_14ap7rh" targetRef="item_loop" />
+    <bpmn:serviceTask id="Activity_14ap7rh" name="Organisation laden" camunda:delegateExpression="${loadOrganisationService}">
+      <bpmn:incoming>Flow_046prlf</bpmn:incoming>
+      <bpmn:outgoing>Flow_1215h00</bpmn:outgoing>
+    </bpmn:serviceTask>
   </bpmn:process>
   <bpmn:message id="Message_1mf8n69" name="Message_1mf8n69" />
   <bpmn:message id="Message_1s2e49h" name="Message_1s2e49h" />
@@ -67,6 +72,9 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_13x808a_di" bpmnElement="Event_13x808a">
         <dc:Bounds x="1152" y="182" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1scz19j_di" bpmnElement="Activity_14ap7rh">
+        <dc:Bounds x="420" y="160" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_14dhnai_di" bpmnElement="item_loop" isExpanded="true">
         <dc:Bounds x="610" y="80" width="480" height="240" />
@@ -102,11 +110,15 @@
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_046prlf_di" bpmnElement="Flow_046prlf">
         <di:waypoint x="370" y="200" />
-        <di:waypoint x="610" y="200" />
+        <di:waypoint x="420" y="200" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0hx26pd_di" bpmnElement="Flow_0hx26pd">
         <di:waypoint x="1090" y="200" />
         <di:waypoint x="1152" y="200" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1215h00_di" bpmnElement="Flow_1215h00">
+        <di:waypoint x="520" y="200" />
+        <di:waypoint x="610" y="200" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
