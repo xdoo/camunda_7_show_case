@@ -1,6 +1,5 @@
 package de.xapio.demo.services.basedata;
 
-import com.google.common.collect.Lists;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.camunda.spin.json.SpinJsonNode;
 import org.springframework.beans.factory.annotation.Value;
