@@ -19,7 +19,7 @@ abstract public class AbstractBasedataService implements JavaDelegate {
 
     protected  RestTemplate restTemplate;
 
-    @Value("${strapi.token}")
+    @Value("${directus.token}")
     private String token;
 
     /**

@@ -1,0 +1,19 @@
+{
+  "components": [
+    {
+      "label": "Name der Leistung",
+      "type": "textfield",
+      "id": "Field_1djmpbi",
+      "key": "item_name"
+    }
+  ],
+  "type": "default",
+  "id": "log_item",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.5.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.18.0",
+  "schemaVersion": 5
+}
