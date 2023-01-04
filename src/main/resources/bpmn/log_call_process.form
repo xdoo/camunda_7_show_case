@@ -1,0 +1,24 @@
+{
+  "components": [
+    {
+      "text": "# Welcher Prozess wird aufgerufen?",
+      "type": "text",
+      "id": "Field_0d7qj7b"
+    },
+    {
+      "label": "process?",
+      "type": "textfield",
+      "id": "Field_0ekhwle",
+      "key": "call_process"
+    }
+  ],
+  "type": "default",
+  "id": "log_call_process",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.5.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.18.0",
+  "schemaVersion": 5
+}

@@ -1,0 +1,43 @@
+{
+  "components": [
+    {
+      "label": "Name der Leistung",
+      "type": "textfield",
+      "id": "Field_1djmpbi",
+      "key": "item_name"
+    },
+    {
+      "label": "ID",
+      "type": "textfield",
+      "id": "Field_1qyikwq",
+      "key": "item"
+    },
+    {
+      "label": "Business Key",
+      "type": "textfield",
+      "id": "Field_122hmbr",
+      "key": "businessKey"
+    },
+    {
+      "label": "Orga",
+      "type": "textfield",
+      "id": "Field_072hue1",
+      "key": "organisation"
+    },
+    {
+      "label": "User",
+      "type": "textfield",
+      "id": "Field_11m7u51",
+      "key": "user_created"
+    }
+  ],
+  "type": "default",
+  "id": "log_item",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.5.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.18.0",
+  "schemaVersion": 5
+}

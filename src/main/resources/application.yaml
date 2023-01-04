@@ -23,6 +23,12 @@ strapi:
     items: http://localhost:1337/api/items/
     organisations: http://localhost:1337/api/organisations/
 
+directus:
+  token: _uakqMqYsUFnJfhDWpqHJ6w18z2mmst4
+  url:
+    item: http://localhost:8055/items/item/
+    item_order: http://localhost:8055/items/item_order/
+
 elastic:
   url: http://localhost:9200/
 

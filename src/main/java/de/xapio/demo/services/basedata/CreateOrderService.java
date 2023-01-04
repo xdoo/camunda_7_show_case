@@ -35,7 +35,7 @@ public class CreateOrderService extends AbstractBasedataService {
         SpinJsonNode jsonOrder = JSON("{\"data\": {}}");
         SpinJsonNode jsonData = jsonOrder.prop("data");
         jsonData.prop("order_date", LocalDateTime.now().toString());
-        jsonData.prop("order_id", orderID);
+        jsonData.prop("oid", orderID);
         jsonData.prop("items", items);
         jsonData.prop("organisation", (String) delegate.getVariable(ORGANISATION));
         String order = jsonOrder.toString();

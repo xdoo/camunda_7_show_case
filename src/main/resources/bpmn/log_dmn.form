@@ -1,0 +1,25 @@
+{
+  "components": [
+    {
+      "label": "los",
+      "type": "textfield",
+      "id": "Field_1a7jrg2",
+      "key": "item_lot_name"
+    },
+    {
+      "label": "Tranche",
+      "type": "textfield",
+      "id": "Field_0gplew7",
+      "key": "item_period"
+    }
+  ],
+  "type": "default",
+  "id": "log_decision_params",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.5.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.18.0",
+  "schemaVersion": 5
+}

@@ -1,0 +1,32 @@
+{
+  "components": [
+    {
+      "label": "Text Field",
+      "type": "textfield",
+      "id": "Field_1vnvid8",
+      "key": "foo"
+    },
+    {
+      "label": "Text Field",
+      "type": "textfield",
+      "id": "Field_1rfxshd",
+      "key": "items"
+    },
+    {
+      "label": "Select",
+      "type": "select",
+      "id": "Field_0zxmtlm",
+      "key": "field_19ktjcy",
+      "valuesKey": "${items.elements()}"
+    }
+  ],
+  "type": "default",
+  "id": "test_form",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.5.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.18.0",
+  "schemaVersion": 5
+}

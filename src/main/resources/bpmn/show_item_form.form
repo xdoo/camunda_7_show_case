@@ -1,0 +1,20 @@
+{
+  "components": [
+    {
+      "label": "Item ID",
+      "type": "textfield",
+      "id": "Field_0apj7au",
+      "key": "item",
+      "properties": {}
+    }
+  ],
+  "type": "default",
+  "id": "show_item_form",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.5.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.18.0",
+  "schemaVersion": 5
+}

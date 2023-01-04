@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="item_process_calculation_drd" name="Leistungs spezifischen Prozess erstellen" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.5.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.18.0">
+  <decision id="item_process_calculation" name="Leistungs spezifischen Prozess bestimmen">
+    <informationRequirement id="InformationRequirement_0yxxgp8">
+      <requiredInput href="#item_period" />
+    </informationRequirement>
+    <informationRequirement id="InformationRequirement_1n722zx">
+      <requiredInput href="#item_lot" />
+    </informationRequirement>
+    <decisionTable id="DecisionTable_1quxli6" hitPolicy="FIRST">
+      <input id="Input_1" label="Los" camunda:inputVariable="item_lot">
+        <inputExpression id="InputExpression_1" typeRef="string">
+          <text>item_lot</text>
+        </inputExpression>
+      </input>
+      <input id="InputClause_1wymnr9" label="Tranche" camunda:inputVariable="item_period">
+        <inputExpression id="LiteralExpression_1poa1vs" typeRef="string">
+          <text></text>
+        </inputExpression>
+      </input>
+      <output id="Output_1" label="Prozess" name="call_process" typeRef="string" />
+      <rule id="DecisionRule_1g5vsd8">
+        <description>Spzezifischer Prozess für Los 1 und Tranche BayKom 2017</description>
+        <inputEntry id="UnaryTests_10ruwcs">
+          <text>"Los 1"</text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_1rzyiga">
+          <text>"BayKom 2017"</text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0hyq2d8">
+          <text>"lot_one_2017"</text>
+        </outputEntry>
+      </rule>
+      <rule id="DecisionRule_1frslch">
+        <description>Unspezifischer Prozess für alle Lose und Tranchen</description>
+        <inputEntry id="UnaryTests_1g9n5uj">
+          <text></text>
+        </inputEntry>
+        <inputEntry id="UnaryTests_0jrjiat">
+          <text></text>
+        </inputEntry>
+        <outputEntry id="LiteralExpression_0rrf7fk">
+          <text>"all_lots_all_periods"</text>
+        </outputEntry>
+      </rule>
+    </decisionTable>
+  </decision>
+  <inputData id="item_lot" name="Los" />
+  <inputData id="item_period" name="Tranche" />
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <dmndi:DMNShape dmnElementRef="item_process_calculation">
+        <dc:Bounds height="80" width="180" x="300" y="210" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0npywug" dmnElementRef="item_lot">
+        <dc:Bounds height="45" width="125" x="158" y="368" />
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="DMNShape_0m2mxkg" dmnElementRef="item_period">
+        <dc:Bounds height="45" width="125" x="159" y="78" />
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="DMNEdge_0w46u64" dmnElementRef="InformationRequirement_0yxxgp8">
+        <di:waypoint x="222" y="123" />
+        <di:waypoint x="390" y="190" />
+        <di:waypoint x="390" y="210" />
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="DMNEdge_0axoq51" dmnElementRef="InformationRequirement_1n722zx">
+        <di:waypoint x="221" y="368" />
+        <di:waypoint x="390" y="310" />
+        <di:waypoint x="390" y="290" />
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</definitions>
