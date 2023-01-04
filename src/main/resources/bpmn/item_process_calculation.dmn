@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="item_process_calculation" name="Leistungs spezifischen Prozess erstellen" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.5.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.18.0">
-  <decision id="Decision_1p60s71" name="Leistungs spezifischen Prozess bestimmen">
+<definitions xmlns="https://www.omg.org/spec/DMN/20191111/MODEL/" xmlns:dmndi="https://www.omg.org/spec/DMN/20191111/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" xmlns:modeler="http://camunda.org/schema/modeler/1.0" xmlns:camunda="http://camunda.org/schema/1.0/dmn" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" id="item_process_calculation_drd" name="Leistungs spezifischen Prozess erstellen" namespace="http://camunda.org/schema/1.0/dmn" exporter="Camunda Modeler" exporterVersion="5.5.0" modeler:executionPlatform="Camunda Platform" modeler:executionPlatformVersion="7.18.0">
+  <decision id="item_process_calculation" name="Leistungs spezifischen Prozess bestimmen">
     <informationRequirement id="InformationRequirement_0yxxgp8">
       <requiredInput href="#item_period" />
     </informationRequirement>
@@ -13,7 +13,7 @@
           <text>item_lot</text>
         </inputExpression>
       </input>
-      <input id="InputClause_1wymnr9" label="Tranche">
+      <input id="InputClause_1wymnr9" label="Tranche" camunda:inputVariable="item_period">
         <inputExpression id="LiteralExpression_1poa1vs" typeRef="string">
           <text></text>
         </inputExpression>
@@ -49,7 +49,7 @@
   <inputData id="item_period" name="Tranche" />
   <dmndi:DMNDI>
     <dmndi:DMNDiagram>
-      <dmndi:DMNShape dmnElementRef="Decision_1p60s71">
+      <dmndi:DMNShape dmnElementRef="item_process_calculation">
         <dc:Bounds height="80" width="180" x="300" y="210" />
       </dmndi:DMNShape>
       <dmndi:DMNShape id="DMNShape_0npywug" dmnElementRef="item_lot">
