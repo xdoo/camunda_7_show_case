@@ -15,12 +15,15 @@ import org.camunda.spin.json.SpinJsonNode;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 import static org.camunda.spin.Spin.JSON;
 
 @Service @Slf4j
 public class GenericProcessStarter implements JavaDelegate {
     public final static String PAYLOAD = "payload";
+
+    public final static String CALL_PROCESS = "call_process";
 
     private final RuntimeService runtimeService;
 
@@ -38,15 +41,16 @@ public class GenericProcessStarter implements JavaDelegate {
     public void execute(DelegateExecution delegate) throws Exception {
 
         // den 'process key' des aufzurufenden Prozesses holen
-        String processKey = (String) delegate.getVariable("call_process");
+        String processKey = (String) delegate.getVariable(CALL_PROCESS);
 
-        // die payload und business key holen
-        Object payload = delegate.getVariable(PAYLOAD);
+        // get all vars
+        Map<String, Object> variables = delegate.getVariables();
+        variables.remove(CALL_PROCESS);
 
         log.info("Prozess " + processKey + " wird aufgerufen");
         ProcessInstance instance = this.runtimeService.createProcessInstanceByKey(processKey)
                 .businessKey(delegate.getProcessBusinessKey())
-                .setVariable(PAYLOAD, payload)
+                .setVariables(variables)
                 .execute();
         log.info("Definition ID -> " + instance.getProcessDefinitionId());
     }
