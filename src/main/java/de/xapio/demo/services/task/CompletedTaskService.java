@@ -32,12 +32,15 @@ public class CompletedTaskService extends AbstractTaskService {
 
         // correlate
         SpinJsonNode jsonTask = JSON(task).prop("data");
+
+        String payload = jsonTask.prop("payload").toString();
+
         if(jsonTask.hasProp("correlation_key")) {
             String correlationKey = jsonTask.prop("correlation_key").stringValue();
             String[] split = correlationKey.split("&&");
             this.runtimeService.createMessageCorrelation(split[1])
                     .processInstanceBusinessKey(split[0])
-//                    .setVariable("payload", jsonTask.prop("payload"))
+                    .setVariable("payload", payload)
                     .correlate();
         } else {
             log.warn("no correlation key found!");
