@@ -16,6 +16,14 @@ abstract public class AbstractTaskService implements JavaDelegate {
     @Value("${directus.token}")
     private String token;
 
+    protected String createCorrelationKey(String businessKey, String eventId) {
+        return businessKey + "&&" + eventId;
+    }
+
+    protected String[] splitcorrelationKey(String correlationKey) {
+        return correlationKey.split("&&");
+    }
+
     @PostConstruct
     private void init() {
         RestTemplate restTemplate = new RestTemplateBuilder()

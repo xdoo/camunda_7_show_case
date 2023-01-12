@@ -17,14 +17,16 @@ public class CreateTaskService extends AbstractTaskService {
         // prepare payload
         String orgId = delegate.getVariable("organisation").toString();
         String formId = delegate.getVariable("form_id").toString();
-        String correlationId = delegate.getBusinessKey() + "&&" + delegate.getVariable("event_id");
+        String title = delegate.getVariable("title").toString();
+        String correlationId = this.createCorrelationKey(delegate.getBusinessKey(), delegate.getVariable("event_id").toString());
 
         String payload = String.format("{\n" +
                 "    \"form_id\": \"%s\",\n" +
+                "    \"title\": \"%s\",\n" +
                 "    \"organisation\": \"%s\",\n" +
                 "    \"status\": \"published\",\n" +
                 "    \"correlation_key\": \"%s\"\n" +
-                "}", formId, orgId, correlationId);
+                "}", formId, title, orgId, correlationId);
 
         // request
         String response = this.restTemplate.postForObject(this.url, payload, String.class);

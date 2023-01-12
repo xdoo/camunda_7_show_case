@@ -37,7 +37,7 @@ public class CompletedTaskService extends AbstractTaskService {
 
         if(jsonTask.hasProp("correlation_key")) {
             String correlationKey = jsonTask.prop("correlation_key").stringValue();
-            String[] split = correlationKey.split("&&");
+            String[] split = this.splitcorrelationKey(correlationKey);
             this.runtimeService.createMessageCorrelation(split[1])
                     .processInstanceBusinessKey(split[0])
                     .setVariable("payload", payload)
