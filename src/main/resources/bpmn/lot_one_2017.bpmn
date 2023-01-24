@@ -5,7 +5,7 @@
       <bpmn:outgoing>Flow_1s52r5l</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:endEvent id="Event_09vqbrz">
-      <bpmn:incoming>Flow_0ev5i33</bpmn:incoming>
+      <bpmn:incoming>Flow_1x3o4pv</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1s52r5l" sourceRef="StartEvent_1" targetRef="Activity_15y6i3g" />
     <bpmn:sequenceFlow id="Flow_1xwxlg5" sourceRef="Activity_105mbxk" targetRef="Event_1i752k3" />
@@ -17,94 +17,229 @@
           <camunda:inputParameter name="title">Anschluss Adresse für Behördennetz angeben</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_13f17x0</bpmn:incoming>
+      <bpmn:incoming>Flow_10f111e</bpmn:incoming>
       <bpmn:outgoing>Flow_1xwxlg5</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_0dpgypx" sourceRef="Event_1i752k3" targetRef="Activity_0swh6z6" />
-    <bpmn:intermediateCatchEvent id="Event_1i752k3">
+    <bpmn:sequenceFlow id="Flow_0dpgypx" sourceRef="Event_1i752k3" targetRef="Event_1rddc8k" />
+    <bpmn:intermediateCatchEvent id="Event_1i752k3" name="Auf Adresse warten">
       <bpmn:incoming>Flow_1xwxlg5</bpmn:incoming>
       <bpmn:outgoing>Flow_0dpgypx</bpmn:outgoing>
       <bpmn:messageEventDefinition id="MessageEventDefinition_1xsnv1m" messageRef="Message_0bqfr7m" />
     </bpmn:intermediateCatchEvent>
-    <bpmn:sequenceFlow id="Flow_1qey1m7" sourceRef="Activity_0swh6z6" targetRef="Activity_02v4kcs" />
+    <bpmn:sequenceFlow id="Flow_1qey1m7" sourceRef="Activity_0swh6z6" targetRef="Event_1niowch" />
     <bpmn:serviceTask id="Activity_0swh6z6" name="log" camunda:delegateExpression="${debugService}">
-      <bpmn:incoming>Flow_0dpgypx</bpmn:incoming>
+      <bpmn:incoming>Flow_1wrdsic</bpmn:incoming>
       <bpmn:outgoing>Flow_1qey1m7</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_0ev5i33" sourceRef="Activity_02v4kcs" targetRef="Event_09vqbrz" />
+    <bpmn:sequenceFlow id="Flow_0ev5i33" sourceRef="Activity_02v4kcs" targetRef="Event_0txayz0" />
     <bpmn:serviceTask id="Activity_02v4kcs" name="Vertrag abschließen" camunda:delegateExpression="${lot1ContractServiceMock}">
-      <bpmn:incoming>Flow_1qey1m7</bpmn:incoming>
+      <bpmn:incoming>Flow_13hrew3</bpmn:incoming>
       <bpmn:outgoing>Flow_0ev5i33</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_13f17x0" sourceRef="Activity_15y6i3g" targetRef="Activity_105mbxk" />
+    <bpmn:sequenceFlow id="Flow_13f17x0" sourceRef="Activity_15y6i3g" targetRef="Event_1704w0e" />
     <bpmn:scriptTask id="Activity_15y6i3g" name="Business Key setzen" scriptFormat="groovy">
       <bpmn:incoming>Flow_1s52r5l</bpmn:incoming>
       <bpmn:outgoing>Flow_13f17x0</bpmn:outgoing>
       <bpmn:script>execution.setBusinessKey(item_order_id)</bpmn:script>
     </bpmn:scriptTask>
+    <bpmn:sequenceFlow id="Flow_10f111e" sourceRef="Event_0rqgcy7" targetRef="Activity_105mbxk" />
+    <bpmn:intermediateThrowEvent id="Event_0rqgcy7" name="Log Event:&#10;Human Task für AB" camunda:asyncBefore="true">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="item_order_id">${execution.businessKey}</camunda:inputParameter>
+          <camunda:inputParameter name="name">Adresse über Human Task abfragen</camunda:inputParameter>
+          <camunda:inputParameter name="type">Log Eintrag</camunda:inputParameter>
+          <camunda:inputParameter name="message">Um die Entfernung zum PoC abmessen zu können, wird die Adresse des Anschlusses (inkl. Koordinaten) benötigt. Diese muss der AB ergänzen. Hierfür hat er ein Human Task Ereignis eingestellt bekommen. </camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0ah7lkm</bpmn:incoming>
+      <bpmn:outgoing>Flow_10f111e</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_10rp4d3" camunda:delegateExpression="${eventService}" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:sequenceFlow id="Flow_1wrdsic" sourceRef="Event_1rddc8k" targetRef="Activity_0swh6z6" />
+    <bpmn:intermediateThrowEvent id="Event_1rddc8k" name="Log Event:&#10;Adresse wurde &#10;übermittelt" camunda:asyncBefore="true">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="item_order_id">${execution.businessKey}</camunda:inputParameter>
+          <camunda:inputParameter name="name">Adresse wurde eingegeben</camunda:inputParameter>
+          <camunda:inputParameter name="type">Log Eintrag</camunda:inputParameter>
+          <camunda:inputParameter name="message">Die Adresse wurde durch den AB übermittelt und an den Provider weiter geleitet. </camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0dpgypx</bpmn:incoming>
+      <bpmn:outgoing>Flow_1wrdsic</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_027e3za" camunda:delegateExpression="${eventService}" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:intermediateThrowEvent id="Event_1704w0e" name="Log Event:&#10;Auftrag angenommen" camunda:asyncBefore="true">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="item_order_id">${execution.businessKey}</camunda:inputParameter>
+          <camunda:inputParameter name="name">Einzelauftrag durch Provider angenommen</camunda:inputParameter>
+          <camunda:inputParameter name="type">Log Eintrag</camunda:inputParameter>
+          <camunda:inputParameter name="message">Der Provider hat die Daten des Einzelauftrages erhalten und hat ihn angenommen. Er wird jetzt weiter bearbeitet.</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_13f17x0</bpmn:incoming>
+      <bpmn:outgoing>Flow_0ah7lkm</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0cnhwym" camunda:delegateExpression="${eventService}" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:sequenceFlow id="Flow_0ah7lkm" sourceRef="Event_1704w0e" targetRef="Event_0rqgcy7" />
+    <bpmn:intermediateThrowEvent id="Event_1niowch" name="Log Event:&#10;Vertrag dem AB&#10;vorlegen" camunda:asyncBefore="true">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="item_order_id">${execution.businessKey}</camunda:inputParameter>
+          <camunda:inputParameter name="name">Vertrag zur Prüfung</camunda:inputParameter>
+          <camunda:inputParameter name="type">Log Eintrag</camunda:inputParameter>
+          <camunda:inputParameter name="message">Der Vertrag wurde fertig gestellt und dem AB zur Prüfung vorgelegt.</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_1qey1m7</bpmn:incoming>
+      <bpmn:outgoing>Flow_13hrew3</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1bqejms" camunda:delegateExpression="${eventService}" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:sequenceFlow id="Flow_13hrew3" sourceRef="Event_1niowch" targetRef="Activity_02v4kcs" />
+    <bpmn:sequenceFlow id="Flow_1x3o4pv" sourceRef="Event_0txayz0" targetRef="Event_09vqbrz" />
+    <bpmn:intermediateCatchEvent id="Event_0txayz0" name="Auf Vertrags-&#10;bestätigung&#10;warten">
+      <bpmn:incoming>Flow_0ev5i33</bpmn:incoming>
+      <bpmn:outgoing>Flow_1x3o4pv</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1gll3g3" />
+    </bpmn:intermediateCatchEvent>
     <bpmn:textAnnotation id="TextAnnotation_0zpmeid">
       <bpmn:text>Die hier empfangenen Adressdaten müssten an den Provider übergeben werden. Diese Schritte werden im PoC übersprungen.</bpmn:text>
     </bpmn:textAnnotation>
     <bpmn:association id="Association_1i9x6al" sourceRef="Event_1i752k3" targetRef="TextAnnotation_0zpmeid" />
+    <bpmn:group id="Group_00kushr" categoryValueRef="CategoryValue_17su1e7" />
+    <bpmn:group id="Group_0muppfr" categoryValueRef="CategoryValue_0uph9pu" />
   </bpmn:process>
   <bpmn:message id="Message_3p8hgb7" name="Message_3p8hgb7" />
   <bpmn:message id="Message_0bqfr7m" name="wait_for_address" />
+  <bpmn:category id="Category_19grfpa">
+    <bpmn:categoryValue id="CategoryValue_17su1e7" value="Human Task Adresse eingeben" />
+  </bpmn:category>
+  <bpmn:category id="Category_00t7f2m">
+    <bpmn:categoryValue id="CategoryValue_0uph9pu" value="Human Task Vertrag bestätigen" />
+  </bpmn:category>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="lot_one_2017">
       <bpmndi:BPMNShape id="TextAnnotation_0zpmeid_di" bpmnElement="TextAnnotation_0zpmeid">
-        <dc:Bounds x="620" y="80" width="180" height="90" />
+        <dc:Bounds x="800" y="60" width="180" height="90" />
         <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1uuq0da_di" bpmnElement="Activity_105mbxk">
-        <dc:Bounds x="450" y="207" width="100" height="80" />
-        <bpmndi:BPMNLabel />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1xu326g_di" bpmnElement="Event_1i752k3">
-        <dc:Bounds x="582" y="229" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_190zbm7_di" bpmnElement="Activity_0swh6z6">
-        <dc:Bounds x="680" y="207" width="100" height="80" />
+        <dc:Bounds x="910" y="207" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_09vqbrz_di" bpmnElement="Event_09vqbrz">
-        <dc:Bounds x="1042" y="229" width="36" height="36" />
+      <bpmndi:BPMNShape id="Event_1xu326g_di" bpmnElement="Event_1i752k3">
+        <dc:Bounds x="698" y="229" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="686" y="272" width="60" height="27" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_0ynyf5y_di" bpmnElement="Activity_02v4kcs">
-        <dc:Bounds x="840" y="207" width="100" height="80" />
+      <bpmndi:BPMNShape id="Activity_1uuq0da_di" bpmnElement="Activity_105mbxk">
+        <dc:Bounds x="560" y="207" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1ataq3w_di" bpmnElement="Event_0rqgcy7">
+        <dc:Bounds x="472" y="229" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="451" y="272" width="78" height="40" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="152" y="229" width="36" height="36" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0dp0cpb_di" bpmnElement="Activity_15y6i3g">
-        <dc:Bounds x="250" y="207" width="100" height="80" />
+        <dc:Bounds x="220" y="207" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0xadqzx" bpmnElement="Event_1704w0e">
+        <dc:Bounds x="372" y="229" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="356" y="272" width="68" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_0fwddy4" bpmnElement="Event_1niowch">
+        <dc:Bounds x="1192" y="229" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1172" y="272" width="78" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_09vqbrz_di" bpmnElement="Event_09vqbrz">
+        <dc:Bounds x="1532" y="229" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_0dozbkj_di" bpmnElement="Event_0txayz0">
+        <dc:Bounds x="1422" y="229" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1408" y="272" width="65" height="40" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0ynyf5y_di" bpmnElement="Activity_02v4kcs">
+        <dc:Bounds x="1290" y="207" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1wia1ce_di" bpmnElement="Event_1rddc8k">
+        <dc:Bounds x="822" y="229" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="802" y="272" width="77" height="40" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Association_1i9x6al_di" bpmnElement="Association_1i9x6al">
-        <di:waypoint x="607" y="231" />
-        <di:waypoint x="635" y="170" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_13f17x0_di" bpmnElement="Flow_13f17x0">
-        <di:waypoint x="350" y="247" />
-        <di:waypoint x="450" y="247" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1xwxlg5_di" bpmnElement="Flow_1xwxlg5">
-        <di:waypoint x="550" y="247" />
-        <di:waypoint x="582" y="247" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_0dpgypx_di" bpmnElement="Flow_0dpgypx">
-        <di:waypoint x="618" y="247" />
-        <di:waypoint x="680" y="247" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1qey1m7_di" bpmnElement="Flow_1qey1m7">
-        <di:waypoint x="780" y="247" />
-        <di:waypoint x="840" y="247" />
+        <di:waypoint x="728" y="233" />
+        <di:waypoint x="800" y="148" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0ev5i33_di" bpmnElement="Flow_0ev5i33">
-        <di:waypoint x="940" y="247" />
-        <di:waypoint x="1042" y="247" />
+        <di:waypoint x="1390" y="247" />
+        <di:waypoint x="1422" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1qey1m7_di" bpmnElement="Flow_1qey1m7">
+        <di:waypoint x="1010" y="247" />
+        <di:waypoint x="1192" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1wrdsic_di" bpmnElement="Flow_1wrdsic">
+        <di:waypoint x="858" y="247" />
+        <di:waypoint x="910" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1xwxlg5_di" bpmnElement="Flow_1xwxlg5">
+        <di:waypoint x="660" y="247" />
+        <di:waypoint x="698" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0dpgypx_di" bpmnElement="Flow_0dpgypx">
+        <di:waypoint x="734" y="247" />
+        <di:waypoint x="822" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_10f111e_di" bpmnElement="Flow_10f111e">
+        <di:waypoint x="508" y="247" />
+        <di:waypoint x="560" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ah7lkm_di" bpmnElement="Flow_0ah7lkm">
+        <di:waypoint x="408" y="247" />
+        <di:waypoint x="472" y="247" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1s52r5l_di" bpmnElement="Flow_1s52r5l">
         <di:waypoint x="188" y="247" />
-        <di:waypoint x="250" y="247" />
+        <di:waypoint x="220" y="247" />
       </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13f17x0_di" bpmnElement="Flow_13f17x0">
+        <di:waypoint x="320" y="247" />
+        <di:waypoint x="372" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_13hrew3_di" bpmnElement="Flow_13hrew3">
+        <di:waypoint x="1228" y="247" />
+        <di:waypoint x="1290" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1x3o4pv_di" bpmnElement="Flow_1x3o4pv">
+        <di:waypoint x="1458" y="247" />
+        <di:waypoint x="1532" y="247" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNShape id="Group_00kushr_di" bpmnElement="Group_00kushr">
+        <dc:Bounds x="540" y="155" width="230" height="150" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="611" y="162" width="89" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_10b177i" bpmnElement="Group_0muppfr">
+        <dc:Bounds x="1265" y="155" width="230" height="167" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1336" y="162" width="90" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
 </bpmn:definitions>
