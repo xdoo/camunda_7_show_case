@@ -55,7 +55,8 @@ public class CreateItemOrderService extends AbstractBasedataService {
         log.info("response -> " + response);
 
         // give vars back to process
-
-
+        SpinJsonNode jsonResponse = JSON(response);
+        String itemOrderId = jsonResponse.prop("data").prop("id").stringValue();
+        delegate.setVariable("item_order_id", itemOrderId);
     }
 }
