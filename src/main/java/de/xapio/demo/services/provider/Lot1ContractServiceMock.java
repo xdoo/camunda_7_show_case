@@ -23,6 +23,10 @@ public class Lot1ContractServiceMock extends AbstractProviderMockService {
         String date = LocalDateTime.now().toString();
         String orgId = delegate.getVariable("organisation").toString();
         String itemOrder = delegate.getProcessBusinessKey();
+        // get address
+        // TODO the variable name should be flexible - payload is everything
+        String address = delegate.getVariable("payload").toString().replaceAll("\"", "\\\"");
+        log.info("Adresse: \n" + address);
 
         // random value for the distance to the PoP
         Random random = new Random();
@@ -43,6 +47,7 @@ public class Lot1ContractServiceMock extends AbstractProviderMockService {
                 "   \"contract_date\": \"%s\",\n" +
                 "   \"organisation\": \"%s\",\n" +
                 "   \"item_order\": \"%s\",\n" +
+                "   \"address\": %s,\n" +
                 "   \"price_params\": {\n" +
                 "       \"create\": [\n" +
                 "%s" +
@@ -59,9 +64,9 @@ public class Lot1ContractServiceMock extends AbstractProviderMockService {
                 "       }\n" +
                 "   ],\n" +
                 "   \"status\": \"published\" \n" +
-                "}", date, orgId, itemOrder, sb.toString(), distance);
+                "}", date, orgId, itemOrder,address, sb.toString(), distance);
 
-        String result = this.restTemplate.postForObject(url, payload, String.class);
-        log.info(result);
+        // set vars for process
+        delegate.setVariable("contract", payload);
     }
 }

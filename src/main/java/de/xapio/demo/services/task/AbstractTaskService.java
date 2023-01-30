@@ -1,5 +1,6 @@
 package de.xapio.demo.services.task;
 
+import de.xapio.demo.commons.CorrelationCommons;
 import org.camunda.bpm.engine.delegate.JavaDelegate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -17,11 +18,13 @@ abstract public class AbstractTaskService implements JavaDelegate {
     private String token;
 
     protected String createCorrelationKey(String businessKey, String eventId) {
-        return businessKey + "&&" + eventId;
+        return CorrelationCommons.createCorrelationKey(businessKey, eventId);
     }
 
     protected String[] splitcorrelationKey(String correlationKey) {
-        return correlationKey.split("&&");
+        return CorrelationCommons.splitcorrelationKey(
+                correlationKey
+        );
     }
 
     @PostConstruct

@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 
 @Slf4j
-public class TestSplit {
+public class Playground {
 
     @Test
     public void testSplit() {
@@ -12,6 +12,11 @@ public class TestSplit {
         String[] split = s.split("&&");
         log.info(split[0]);
         log.info(split[1]);
+    }
+
+    @Test
+    public void testReplaceAll() {
+
     }
 
 }
