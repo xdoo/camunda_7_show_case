@@ -49,7 +49,6 @@ public class LineToJsonConverterService {
                 "   }\n" +
                 "}", businessKey, processId, sb.toString());
 
-
         return result;
     }
 
