@@ -14,7 +14,7 @@ public class BillImporter extends RouteBuilder {
         from("file:inbox_bills?move=.done")
                 .unmarshal(csv)
                 .split(body())
-                .bean("lineToJsonConverterService", "convert('generic_billing', 'foo', ${header[CamelCsvHeaderRecord]}, ${body})")
+                .bean("lineToJsonConverterService", "convert('generic_billing', 'vertrags_nr', ${header[CamelCsvHeaderRecord]}, ${body})")
                 .log("${body}")
                 .bean("genericProcessStarter", "startProcess(${body})")
         ;
