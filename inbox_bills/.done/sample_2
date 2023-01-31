@@ -1,2 +1,2 @@
-vertrags_nr,leistungs_nr,grundpreis, entfernung, entfernungspreis,verbrauch, verbrauchspreis
+vertrags_nr,leistungs_nr,grp_preis, epo_verbrauch, epo_preis,dtv_verbrauch, dtv_preis
 ABCDESTRT,2435XRF240A,20.0.,12.0,225.0,92.0,373.1
