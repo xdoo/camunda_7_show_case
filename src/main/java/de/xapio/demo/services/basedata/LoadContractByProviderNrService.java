@@ -1,7 +1,9 @@
 package de.xapio.demo.services.basedata;
 
 import de.xapio.demo.processes.GenericBillingVars;
+import de.xapio.demo.services.basedata.exceptions.RefNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.spin.impl.json.jackson.JacksonJsonNode;
 import org.camunda.spin.json.SpinJsonNode;
@@ -32,7 +34,7 @@ public class LoadContractByProviderNrService extends AbstractBasedataService {
         String response = this.restTemplate.getForObject(filterUrl, String.class);
 
         SpinJsonNode jsonResponse = JSON(response);
-        if(jsonResponse.hasProp("data")) {
+        if(jsonResponse.hasProp("data") && !jsonResponse.prop("data").elements().isEmpty()) {
 
             // add contract to process context
             SpinJsonNode contract = jsonResponse.jsonPath("$.data[0]").element();
@@ -46,7 +48,7 @@ public class LoadContractByProviderNrService extends AbstractBasedataService {
             String itemNumber = jsonResponse.jsonPath("$.data[0].item_order.item.provider_item_number").stringValue();
             delegate.setVariable(GenericBillingVars.ITEM_NUMBER, itemNumber);
         } else {
-            log.warn("response seems not ok: " + response);
+            throw new BpmnError(String.format("contract_missmatch","Es konnte kein Vertrag mit der Nummer '%s' gefunden werden. Prüfen Sie bitte den Datensatz.", providerContractNr));
         }
 
 

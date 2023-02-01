@@ -59,6 +59,9 @@ public class SaveBillService extends AbstractBasedataService {
 
         String response = this.restTemplate.postForObject(this.billUrl, payload, String.class);
         log.info(response);
+
+        String billId = JSON(response).prop("data").prop("id").stringValue();
+        delegate.setVariable(GenericBillingVars.BILL_ID, billId);
     }
 
     public String createBillItems(JacksonJsonNode bill) {

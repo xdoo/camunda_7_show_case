@@ -5,7 +5,7 @@
       <bpmn:outgoing>Flow_1e2ojnd</bpmn:outgoing>
     </bpmn:startEvent>
     <bpmn:endEvent id="Event_1rz4jn9">
-      <bpmn:incoming>Flow_0wetdi8</bpmn:incoming>
+      <bpmn:incoming>Flow_1m7w7tn</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_1e2ojnd" sourceRef="StartEvent_1" targetRef="Activity_0kaxs1r" />
     <bpmn:sequenceFlow id="Flow_0r7tuq8" sourceRef="Activity_0kaxs1r" targetRef="Activity_1s076to" />
@@ -13,25 +13,72 @@
       <bpmn:incoming>Flow_1e2ojnd</bpmn:incoming>
       <bpmn:outgoing>Flow_0r7tuq8</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_0wetdi8" sourceRef="Activity_1s076to" targetRef="Event_1rz4jn9" />
+    <bpmn:sequenceFlow id="Flow_0wetdi8" sourceRef="Activity_1s076to" targetRef="Event_0uay922" />
     <bpmn:serviceTask id="Activity_1s076to" name="Rechnung speichern" camunda:asyncAfter="true" camunda:delegateExpression="${saveBillService}">
       <bpmn:incoming>Flow_0r7tuq8</bpmn:incoming>
       <bpmn:outgoing>Flow_0wetdi8</bpmn:outgoing>
     </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_1m7w7tn" sourceRef="Event_0uay922" targetRef="Event_1rz4jn9" />
+    <bpmn:intermediateThrowEvent id="Event_0uay922" name="Rechnung wurde angelegt" camunda:asyncAfter="true">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="name">Rechnung wurde angelegt</camunda:inputParameter>
+          <camunda:inputParameter name="message">Die Rechnung wurde zum entsprechenden Vertrag angelegt. Es wird nun mit der Rechnungsprüfung begonnen.</camunda:inputParameter>
+          <camunda:inputParameter name="type">Log Eintrag</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0wetdi8</bpmn:incoming>
+      <bpmn:outgoing>Flow_1m7w7tn</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_0ihmpyy" camunda:delegateExpression="${billEventService}" />
+    </bpmn:intermediateThrowEvent>
+    <bpmn:boundaryEvent id="contract_not_found" name="Vertrag nicht gefunden" camunda:asyncAfter="true" attachedToRef="Activity_0kaxs1r">
+      <bpmn:outgoing>Flow_0kqdsys</bpmn:outgoing>
+      <bpmn:errorEventDefinition id="ErrorEventDefinition_19di6ie" errorRef="ref_not_found" camunda:errorMessageVariable="error_message" />
+    </bpmn:boundaryEvent>
+    <bpmn:endEvent id="Event_11nanc1">
+      <bpmn:incoming>Flow_03q5hgt</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0kqdsys" sourceRef="contract_not_found" targetRef="Activity_1yjo43g" />
+    <bpmn:sequenceFlow id="Flow_03q5hgt" sourceRef="Activity_1yjo43g" targetRef="Event_11nanc1" />
+    <bpmn:userTask id="Activity_1yjo43g" name="Datensatz prüfen" camunda:formRef="contract_missmatch_form" camunda:formRefBinding="latest">
+      <bpmn:extensionElements />
+      <bpmn:incoming>Flow_0kqdsys</bpmn:incoming>
+      <bpmn:outgoing>Flow_03q5hgt</bpmn:outgoing>
+    </bpmn:userTask>
   </bpmn:process>
+  <bpmn:error id="ref_not_found" name="contract_missmatch" errorCode="contract_missmatch" camunda:errorMessage="Something went wrong: ${errorCause}" />
   <bpmndi:BPMNDiagram id="BPMNDiagram_1">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="generic_billing">
       <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
         <dc:Bounds x="179" y="99" width="36" height="36" />
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1rz4jn9_di" bpmnElement="Event_1rz4jn9">
+        <dc:Bounds x="732" y="99" width="36" height="36" />
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0ol7t90_di" bpmnElement="Activity_0kaxs1r">
         <dc:Bounds x="290" y="77" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_1rz4jn9_di" bpmnElement="Event_1rz4jn9">
-        <dc:Bounds x="602" y="99" width="36" height="36" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_157vce4_di" bpmnElement="Activity_1s076to">
         <dc:Bounds x="450" y="77" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_08wikkq_di" bpmnElement="Event_0uay922">
+        <dc:Bounds x="602" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="578" y="142" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_11nanc1_di" bpmnElement="Event_11nanc1">
+        <dc:Bounds x="542" y="242" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0s1abc0_di" bpmnElement="Activity_1yjo43g">
+        <dc:Bounds x="380" y="220" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_1f9qu9k_di" bpmnElement="contract_not_found">
+        <dc:Bounds x="312" y="139" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="259" y="176" width="62" height="27" />
+        </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Flow_1e2ojnd_di" bpmnElement="Flow_1e2ojnd">
         <di:waypoint x="215" y="117" />
@@ -44,6 +91,19 @@
       <bpmndi:BPMNEdge id="Flow_0wetdi8_di" bpmnElement="Flow_0wetdi8">
         <di:waypoint x="550" y="117" />
         <di:waypoint x="602" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1m7w7tn_di" bpmnElement="Flow_1m7w7tn">
+        <di:waypoint x="638" y="117" />
+        <di:waypoint x="732" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0kqdsys_di" bpmnElement="Flow_0kqdsys">
+        <di:waypoint x="330" y="175" />
+        <di:waypoint x="330" y="260" />
+        <di:waypoint x="380" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_03q5hgt_di" bpmnElement="Flow_03q5hgt">
+        <di:waypoint x="480" y="260" />
+        <di:waypoint x="542" y="260" />
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

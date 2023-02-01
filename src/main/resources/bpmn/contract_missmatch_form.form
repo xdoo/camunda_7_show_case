@@ -1,0 +1,37 @@
+{
+  "components": [
+    {
+      "text": "# Rechnung konnte keinem Vertrag zugeordnet werden",
+      "type": "text",
+      "id": "Field_04pl8f5"
+    },
+    {
+      "label": "Fehlermeldung",
+      "type": "textfield",
+      "id": "Field_112xt9f",
+      "key": "error_message"
+    },
+    {
+      "label": "Datensatz",
+      "type": "textfield",
+      "id": "Field_03rfyzv",
+      "key": "bill"
+    },
+    {
+      "action": "submit",
+      "label": "abschließen",
+      "type": "button",
+      "id": "Field_0vx5tk3",
+      "key": "field_1gcmxq3"
+    }
+  ],
+  "type": "default",
+  "id": "contract_missmatch_form",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.5.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.18.0",
+  "schemaVersion": 5
+}
