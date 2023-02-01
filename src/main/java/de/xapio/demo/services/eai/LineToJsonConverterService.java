@@ -28,7 +28,7 @@ public class LineToJsonConverterService {
             if(i>0) {
                 sb.append(",");
             }
-            sb.append("\"").append(cols.get(i)).append("\": \"").append(payload.get(i)).append("\"\n");
+            sb.append("\"").append(cols.get(i)).append("\": \"").append(payload.get(i).trim()).append("\"\n");
 
             // business key
             if(cols.get(i).equals(businessKeyName)) {
