@@ -1,23 +1,31 @@
 package de.xapio.demo.services.basedata;
 
-import com.fasterxml.jackson.annotation.JsonValue;
-import com.fasterxml.jackson.databind.JsonNode;
+import com.google.common.collect.Lists;
 import de.xapio.demo.processes.GenericBillingVars;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
+import org.camunda.spin.SpinList;
 import org.camunda.spin.impl.json.jackson.JacksonJsonNode;
 import org.camunda.spin.json.SpinJsonNode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
+import java.util.*;
+
+import static org.camunda.spin.Spin.JSON;
+
 @Service @Slf4j
 public class SaveBillService extends AbstractBasedataService {
 
-    @Value("${directus.url.contract}")
-    private String contractUrl;
+    @Value("${directus.url.bill}")
+    private String billUrl;
 
     @Value("${directus.url.type}")
     private String typeUrl;
+
+    private final Map<String,String> types = new HashMap<>();
+
     @Override
     public void execute(DelegateExecution delegate) throws Exception {
 
@@ -30,7 +38,9 @@ public class SaveBillService extends AbstractBasedataService {
         String bruttoBetrag = bill.prop("brutto_betrag").stringValue();
         String steuer = bill.prop("steuer").stringValue();
         String rechnungsNummer = bill.prop("rechnungs_nr").stringValue();
-        String raw = "{}";
+        String raw = bill.toString();
+        String items = this.createBillItems(bill);
+
 
         String payload = String.format(" {\n" +
                 "    \"date\": \"%s\",\n" +
@@ -41,22 +51,77 @@ public class SaveBillService extends AbstractBasedataService {
                 "    \"contract\": \"%s\",\n" +
                 "    \"raw\": %s,\n" +
                 "    \"bill_items\": [\n" +
-                "        {\n" +
-                "            \"status\": \"published\",\n" +
-                "            \"type\": \"ee4c6f2f-621b-4498-ad22-d7b4e0e52624\",\n" +
-                "            \"amount\": 12,\n" +
-                "            \"price\": 225\n" +
-                "        },\n" +
-                "        {\n" +
-                "            \"status\": \"published\",\n" +
-                "            \"type\": \"e9b2e965-84c3-49e1-9283-2c8fa3ec2306\",\n" +
-                "            \"amount\": 1,\n" +
-                "            \"price\": 20\n" +
-                "        }\n" +
+                "        %s" +
                 "    ],\n" +
                 "    \"status\": \"published\"\n" +
-                "}", rechnungsDatum, nettoBetrag, bruttoBetrag, steuer, rechnungsNummer, contractId, raw);
-
+                "}", rechnungsDatum, nettoBetrag, bruttoBetrag, steuer, rechnungsNummer, contractId, raw, items);
         log.info(payload);
+
+        String response = this.restTemplate.postForObject(this.billUrl, payload, String.class);
+        log.info(response);
+    }
+
+    public String createBillItems(JacksonJsonNode bill) {
+        List<String> props = bill.fieldNames();
+        Map<String, SpinJsonNode> items = new HashMap<>();
+
+        props.stream().forEach(p -> {
+            this.types.keySet().forEach(k -> {
+                if(p.startsWith(k)) {
+                    String[] s = p.split("_");
+                    String value = bill.prop(p).stringValue();
+                    this.buildBillItem(items, k, s[1], value);
+                }
+            });
+        });
+
+        StringBuilder sb = new StringBuilder();
+        ArrayList<SpinJsonNode> itemObjects = Lists.newArrayList(items.values());
+        for(int i=0;i < itemObjects.size();i++){
+            if(i>0) {
+                sb.append(",");
+            }
+            sb.append(itemObjects.get(i));
+        }
+
+        return sb.toString();
+    }
+
+    public void buildBillItem(Map<String, SpinJsonNode> items, String typePrefix, String prop, String value) {
+        // is there an entry?
+        if(!items.containsKey(typePrefix)) {
+            SpinJsonNode json = JSON("{\n" +
+                    "            \"status\": \"published\",\n" +
+                    "            \"type\": \"\",\n" +
+                    "            \"amount\": 1,\n" +
+                    "            \"price\": 0\n" +
+                    "        }");
+            // set type id
+            json.prop("type", this.types.get(typePrefix));
+            items.put(typePrefix, json);
+        }
+        SpinJsonNode item = items.get(typePrefix);
+
+        // preis?
+        if(prop.toLowerCase().equals("preis")) {
+            item.prop("price", value);
+        }
+        // anzahl?
+        if(prop.toLowerCase().equals("verbrauch")) {
+            item.prop("amount", value);
+        }
+    }
+
+    @PostConstruct
+    public void loadTypes() {
+        // load types in map
+        String response = this.restTemplate.getForObject(typeUrl, String.class);
+        SpinJsonNode typeJson = JSON(response);
+        if(typeJson.prop("data").isArray()){
+            SpinList<SpinJsonNode> t = typeJson.prop("data").elements();
+            t.forEach(type -> {
+                this.types.put(type.prop("prefix").stringValue(), type.prop("id").stringValue());
+            });
+        }
     }
 }

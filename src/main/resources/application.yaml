@@ -31,7 +31,8 @@ directus:
     task: http://localhost:8055/items/task/
     contract: http://localhost:8055/items/contract/
     order_event: http://localhost:8055/items/order_event
-    type: localhost:8055/items/type?fields=id,name,prefix
+    type: http://localhost:8055/items/type?fields=id,name,prefix
+    bill: http://localhost:8055/items/bill
 
 elastic:
   url: http://localhost:9200/
