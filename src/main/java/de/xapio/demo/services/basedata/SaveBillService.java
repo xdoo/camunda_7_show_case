@@ -7,11 +7,14 @@ import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.spin.SpinList;
 import org.camunda.spin.impl.json.jackson.JacksonJsonNode;
 import org.camunda.spin.json.SpinJsonNode;
+import org.camunda.spin.plugin.variable.SpinValues;
+import org.camunda.spin.plugin.variable.value.JsonValue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.camunda.spin.Spin.JSON;
 
@@ -39,8 +42,8 @@ public class SaveBillService extends AbstractBasedataService {
         String steuer = bill.prop("steuer").stringValue();
         String rechnungsNummer = bill.prop("rechnungs_nr").stringValue();
         String raw = bill.toString();
-        String items = this.createBillItems(bill);
-
+        ArrayList<SpinJsonNode> billItems = this.createBillItems(bill);
+        String items = this.stringifyBillItems(billItems);
 
         String payload = String.format(" {\n" +
                 "    \"date\": \"%s\",\n" +
@@ -60,11 +63,16 @@ public class SaveBillService extends AbstractBasedataService {
         String response = this.restTemplate.postForObject(this.billUrl, payload, String.class);
         log.info(response);
 
+        // set bill id as process var
         String billId = JSON(response).prop("data").prop("id").stringValue();
         delegate.setVariable(GenericBillingVars.BILL_ID, billId);
+
+        // set bill items as process var
+        List<String> billItemVars = billItems.stream().map(b -> b.toString()).collect(Collectors.toList());
+        delegate.setVariable(GenericBillingVars.BILL_ITEMS, billItemVars);
     }
 
-    public String createBillItems(JacksonJsonNode bill) {
+    public ArrayList<SpinJsonNode> createBillItems(JacksonJsonNode bill) {
         List<String> props = bill.fieldNames();
         Map<String, SpinJsonNode> items = new HashMap<>();
 
@@ -78,8 +86,11 @@ public class SaveBillService extends AbstractBasedataService {
             });
         });
 
+        return Lists.newArrayList(items.values());
+    }
+
+    public String stringifyBillItems(ArrayList<SpinJsonNode> itemObjects) {
         StringBuilder sb = new StringBuilder();
-        ArrayList<SpinJsonNode> itemObjects = Lists.newArrayList(items.values());
         for(int i=0;i < itemObjects.size();i++){
             if(i>0) {
                 sb.append(",");
@@ -118,7 +129,7 @@ public class SaveBillService extends AbstractBasedataService {
     @PostConstruct
     public void loadTypes() {
         // load types in map
-        String response = this.restTemplate.getForObject(typeUrl, String.class);
+        String response = this.restTemplate.getForObject(typeUrl + "?fields=id,name,prefix", String.class);
         SpinJsonNode typeJson = JSON(response);
         if(typeJson.prop("data").isArray()){
             SpinList<SpinJsonNode> t = typeJson.prop("data").elements();

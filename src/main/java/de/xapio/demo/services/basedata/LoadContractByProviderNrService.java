@@ -1,15 +1,11 @@
 package de.xapio.demo.services.basedata;
 
 import de.xapio.demo.processes.GenericBillingVars;
-import de.xapio.demo.services.basedata.exceptions.RefNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
-import org.camunda.spin.impl.json.jackson.JacksonJsonNode;
 import org.camunda.spin.json.SpinJsonNode;
-import org.camunda.spin.json.SpinJsonPathQuery;
 import org.camunda.spin.plugin.variable.SpinValues;
-import org.camunda.spin.plugin.variable.value.JsonValue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -36,19 +32,23 @@ public class LoadContractByProviderNrService extends AbstractBasedataService {
         SpinJsonNode jsonResponse = JSON(response);
         if(jsonResponse.hasProp("data") && !jsonResponse.prop("data").elements().isEmpty()) {
 
-            // add contract to process context
-            SpinJsonNode contract = jsonResponse.jsonPath("$.data[0]").element();
-            delegate.setVariable(GenericBillingVars.CONTRACT, SpinValues.jsonValue(contract).create());
+            try {
+                // add contract to process context
+                SpinJsonNode contract = jsonResponse.jsonPath("$.data[0]").element();
+                delegate.setVariable(GenericBillingVars.CONTRACT, SpinValues.jsonValue(contract).create());
 
-            // add contract id to process context
-            String contractId = jsonResponse.jsonPath("$.data[0].id").stringValue();
-            delegate.setVariable(GenericBillingVars.CONTRACT_ID, contractId);
+                // add contract id to process context
+                String contractId = jsonResponse.jsonPath("$.data[0].id").stringValue();
+                delegate.setVariable(GenericBillingVars.CONTRACT_ID, contractId);
 
-            // add provider item number to process context
-            String itemNumber = jsonResponse.jsonPath("$.data[0].item_order.item.provider_item_number").stringValue();
-            delegate.setVariable(GenericBillingVars.ITEM_NUMBER, itemNumber);
+                // add provider item number to process context
+                String itemNumber = jsonResponse.jsonPath("$.data[0].item_order.item.provider_item_number").stringValue();
+                delegate.setVariable(GenericBillingVars.ITEM_NUMBER, itemNumber);
+            } catch (Exception e) {
+                throw new BpmnError(String.format("data_error","Die erste Datenprüfung zur hat fehlgeschlagen. Der Vertrag (%s) konnte gefunden werden, aber bei der Verarbeitung der Rechnungsdaten sind Fehler aufgetreten. Prüfen Sie bitte den Datensatz. [%e]", providerContractNr, e.getMessage()));
+            }
         } else {
-            throw new BpmnError(String.format("contract_missmatch","Es konnte kein Vertrag mit der Nummer '%s' gefunden werden. Prüfen Sie bitte den Datensatz.", providerContractNr));
+            throw new BpmnError(String.format("data_error","Es konnte kein Vertrag mit der Nummer '%s' gefunden werden. Prüfen Sie bitte den Datensatz.", providerContractNr));
         }
 
 
