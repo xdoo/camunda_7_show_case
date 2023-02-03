@@ -32,7 +32,7 @@ directus:
     contract: http://localhost:8055/items/contract/
     order_event: http://localhost:8055/items/order_event/
     type: http://localhost:8055/items/type/
-    bill: http://localhost:8055/items/bill
+    bill: http://localhost:8055/items/bill/
     bill_event: http://localhost:8055/items/bill_event/
 
 elastic:

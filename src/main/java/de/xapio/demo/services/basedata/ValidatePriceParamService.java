@@ -31,9 +31,11 @@ public class ValidatePriceParamService extends AbstractBasedataService {
         SpinJsonNode billItem = JSON(billItemString);
 
         // HACK!!! types should be globally available
-        String typeString = this.restTemplate.getForObject(this.typeUrl + billItem.prop("type").toString(), String.class);
-        SpinJsonNode type = JSON(typeString);
-        String prefix = type.prop("data").prop("prefix").stringValue();
+        String url = this.typeUrl + billItem.prop("type").stringValue();
+        String typeString = this.restTemplate.getForObject(url, String.class);
+        SpinJsonNode type = JSON(typeString).prop("data");
+        String typeName = type.prop("name").toString().replaceAll("\"", "");
+        String prefix = type.prop("prefix").stringValue();
 
         // get price params
         SpinList<SpinJsonNode> priceParams = contract.jsonPath("$.price_params").elementList();
@@ -59,14 +61,14 @@ public class ValidatePriceParamService extends AbstractBasedataService {
             }
 
             // create message
-            List<String> errorStack = this.check(priceParam, quantityParam, billItem);
+            List<String> errorStack = this.check(priceParam.prop("price_param_id"), quantityParam, billItem);
             if(errorStack.isEmpty()) {
-                name = String.format("%s: Prüfung erfolgreich", type.prop("name").toString());
-                message = String.format("Bei der Prüfung des Rechnungsposten '%s' konnten keine Fehler festgestellt werden.");
+                name = String.format("%s: Prüfung erfolgreich", typeName);
+                message = String.format("Bei der Prüfung des Rechnungsposten '%s' konnten keine Fehler festgestellt werden.", typeName);
                 msgType = "Korrekt geprüft";
             } else {
-                name = String.format("%s: Prüfung nicht erfolgreich", type.prop("name").toString());
-                StringBuilder sb = new StringBuilder(String.format("Bei der Prüfung des Rechnungsposten '%s' wurden Fehler festgestellt: \n"));
+                name = String.format("%s: Prüfung nicht erfolgreich", typeName);
+                StringBuilder sb = new StringBuilder(String.format("Bei der Prüfung des Rechnungsposten '%s' wurden Fehler festgestellt: \n", typeName));
                 errorStack.stream().forEach(e -> sb.append(e).append("\n"));
                 message = sb.toString();
                 msgType = "Fehler";
@@ -74,16 +76,16 @@ public class ValidatePriceParamService extends AbstractBasedataService {
 
         } else if (pps.isEmpty()) {
             // Fehler erzeugen -> kann ein Fehler in der Rechnung sein, oder aber in der Leistungskonfiguration
-            name = String.format("%s: Keine Prüfung möglich", type.prop("name").toString());
+            name = String.format("%s: Keine Prüfung möglich", typeName);
             message = String.format("Zum Rechnungsposten Typ '%s' konnte keine Prüfung durchgeführt werden, da es " +
                     "keinen Preis Parameter des Typs im Vertrag gibt. Entweder ist hier der Vertrag (und evtl. sogar" +
-                    " die Konfiguration der Leistung) falsch, oder der übermittelte Rechnungsdatensatz.", type.prop("name").toString());
+                    " die Konfiguration der Leistung) falsch, oder der übermittelte Rechnungsdatensatz.", typeName);
             msgType = "Fehler";
         } else if (pps.size() > 1) {
             // Fehler erzeugen -> muss ein Fehler im Vertrag sein
-            name = String.format("%s: Keine Prüfung möglich", type.prop("name").toString());
+            name = String.format("%s: Keine Prüfung möglich", typeName);
             message = String.format("Zum Rechnungsposten Typ '%s' konnte keine Prüfung durchgeführt werden, da es " +
-                    "mehr als einen Preis Parameter des Typs im Vertrag gibt. Das sollte fachlich nicht möglich sein.", type.prop("name").toString());
+                    "mehr als einen Preis Parameter des Typs im Vertrag gibt. Das sollte fachlich nicht möglich sein.", typeName);
             msgType = "Fehler";
         }
         // Variablen an den Prozess zurück geben
@@ -115,8 +117,11 @@ public class ValidatePriceParamService extends AbstractBasedataService {
      */
     public void checkQuantityParam(List<String> errorStack, SpinJsonNode quantityParam, SpinJsonNode billItem) {
         if(quantityParam != null) {
-            BigDecimal bAmount = new BigDecimal(billItem.prop("amount").toString());
-            BigDecimal qAmount = new BigDecimal(quantityParam.prop("amount").toString());
+            // Man könnte hier auch "stringValue()" verwenden. Das Problem ist nur, wenn es im JSOn kein String, sondern eine
+            // Nummer ist. Um beide Fälle abbilden zu können, ist "toString()" die sichere Variante. Dann müssen allerdings
+            // im Fall, dass der Wert im Json ein String war, die Anführungszeichen entfernt werden.
+            BigDecimal bAmount = new BigDecimal(billItem.prop("amount").toString().replaceAll("\"", ""));
+            BigDecimal qAmount = new BigDecimal(quantityParam.prop("quantity").toString().replaceAll("\"", ""));
             if(bAmount.compareTo(qAmount) != 0) {
                 errorStack.add("Die Anzahl der Einheiten im Rechnungsposten stimmt nicht mit der vertraglich vereinbarten fixen Menge überein.");
             }
@@ -131,12 +136,12 @@ public class ValidatePriceParamService extends AbstractBasedataService {
      */
     public void checkPrice(List<String> errorStack, SpinJsonNode priceParam, SpinJsonNode billItem) {
         // price param vars
-        BigDecimal freeUnits = new BigDecimal(priceParam.prop("free_units").toString());
-        BigDecimal costCap = new BigDecimal(priceParam.prop("cost_cap").toString());
-        BigDecimal pricePerUnit = new BigDecimal(priceParam.prop("price_per_unit").toString());
+        BigDecimal freeUnits = new BigDecimal(priceParam.prop("free_units").toString().replaceAll("\"", ""));
+        BigDecimal costCap = new BigDecimal(priceParam.prop("cost_cap").toString().replaceAll("\"", ""));
+        BigDecimal pricePerUnit = new BigDecimal(priceParam.prop("price_per_unit").toString().replaceAll("\"", ""));
         // bill item vars
-        BigDecimal amount = new BigDecimal(billItem.prop("amount").toString());
-        BigDecimal price = new BigDecimal(billItem.prop("price").toString());
+        BigDecimal amount = new BigDecimal(billItem.prop("amount").toString().replaceAll("\"", ""));
+        BigDecimal price = new BigDecimal(billItem.prop("price").toString().replaceAll("\"", ""));
 
         // verrechenbare Einheiten errechnen
         BigDecimal billableAmount = amount.subtract(freeUnits);

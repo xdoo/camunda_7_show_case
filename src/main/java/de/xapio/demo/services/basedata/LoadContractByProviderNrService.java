@@ -20,8 +20,8 @@ public class LoadContractByProviderNrService extends AbstractBasedataService {
     public void execute(DelegateExecution delegate) throws Exception {
         String providerContractNr = delegate.getProcessBusinessKey();
         // create Filter URL
-        String filterUrl = String.format("%s?filter[provider_contract_number][_eq]=%s&fields=id,provider_contract_number," +
-                "organisation.id,item_order.item.provider_item_number,price_params.price_param_id.price_per_unit," +
+        String filterUrl = String.format("%s?filter[provider_contract_number][_eq]=%s&fields=id,organisation.id,provider_contract_number," +
+                "organisation.id,item_order.item.provider_item_number,item_order.item.name,price_params.price_param_id.price_per_unit," +
                 "price_params.price_param_id.free_units,price_params.price_param_id.cost_cap," +
                 "price_params.price_param_id.period,price_params.price_param_id.type.name," +
                 "price_params.price_param_id.type.prefix,quantity_params.quantity,quantity_params.type.name," +
@@ -44,6 +44,14 @@ public class LoadContractByProviderNrService extends AbstractBasedataService {
                 // add provider item number to process context
                 String itemNumber = jsonResponse.jsonPath("$.data[0].item_order.item.provider_item_number").stringValue();
                 delegate.setVariable(GenericBillingVars.ITEM_NUMBER, itemNumber);
+
+                // add org id (for task management) to process context
+                String organisationId = jsonResponse.jsonPath("$.data[0].organisation.id").stringValue();
+                delegate.setVariable(GenericBillingVars.ORGANSIATION_ID, organisationId);
+
+                // add item name (for task management) to process context
+                String itemName = jsonResponse.jsonPath("$.data[0].item_order.item.name").stringValue();
+                delegate.setVariable(GenericBillingVars.ITEM_NAME, itemName);
             } catch (Exception e) {
                 throw new BpmnError(String.format("data_error","Die erste Datenprüfung zur hat fehlgeschlagen. Der Vertrag (%s) konnte gefunden werden, aber bei der Verarbeitung der Rechnungsdaten sind Fehler aufgetreten. Prüfen Sie bitte den Datensatz. [%e]", providerContractNr, e.getMessage()));
             }

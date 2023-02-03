@@ -45,9 +45,13 @@ public class LineToJsonConverterService {
                 "      \"bill\":{\n" +
                 "         \"value\":%s,\n" +
                 "         \"type\":\"object\"\n" +
+                "      },\n" +
+                "      \"bill_provider_number\":{\n" +
+                "         \"value\":\"%s\",\n" +
+                "         \"type\":\"string\"\n" +
                 "      }\n" +
                 "   }\n" +
-                "}", businessKey, processId, sb.toString());
+                "}", businessKey, processId, sb.toString(), businessKey);
 
         return result;
     }

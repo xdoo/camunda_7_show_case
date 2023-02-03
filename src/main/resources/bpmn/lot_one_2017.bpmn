@@ -33,6 +33,7 @@
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_0ev5i33" sourceRef="Activity_02v4kcs" targetRef="Event_0vd8uju" />
     <bpmn:serviceTask id="Activity_02v4kcs" name="Vertrag speichern und prüfen" camunda:delegateExpression="${saveContractService}">
+      <bpmn:extensionElements />
       <bpmn:incoming>Flow_13hrew3</bpmn:incoming>
       <bpmn:outgoing>Flow_0ev5i33</bpmn:outgoing>
     </bpmn:serviceTask>
