@@ -73,6 +73,11 @@ public class SaveBillService extends AbstractBasedataService {
 
         // set bill id as bussiness key - so the correlation can be unique
         delegate.setProcessBusinessKey(billId);
+
+        // set some other vars
+        delegate.setVariable(GenericBillingVars.PRICE_GROSS, bruttoBetrag);
+        delegate.setVariable(GenericBillingVars.PRICE_NET, nettoBetrag);
+        delegate.setVariable(GenericBillingVars.PRICE_TAX, steuer);
     }
 
     public ArrayList<SpinJsonNode> createBillItems(JacksonJsonNode bill) {

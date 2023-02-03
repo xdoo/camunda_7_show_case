@@ -16,4 +16,7 @@ public class GenericBillingVars {
     public static String VALIDATION_RESULT = "validation_result";
     public static String ERROR_COUNT = "error_count";
     public static String ORGANSIATION_ID = "organisation_id";
+    public static String PRICE_NET = "price_net";
+    public static String PRICE_GROSS = "price_gross";
+    public static String PRICE_TAX = "price_tax";
 }
