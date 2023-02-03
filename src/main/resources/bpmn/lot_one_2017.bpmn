@@ -31,8 +31,9 @@
       <bpmn:incoming>Flow_1wrdsic</bpmn:incoming>
       <bpmn:outgoing>Flow_1qey1m7</bpmn:outgoing>
     </bpmn:serviceTask>
-    <bpmn:sequenceFlow id="Flow_0ev5i33" sourceRef="Activity_02v4kcs" targetRef="Event_0txayz0" />
+    <bpmn:sequenceFlow id="Flow_0ev5i33" sourceRef="Activity_02v4kcs" targetRef="Event_0vd8uju" />
     <bpmn:serviceTask id="Activity_02v4kcs" name="Vertrag speichern und prüfen" camunda:delegateExpression="${saveContractService}">
+      <bpmn:extensionElements />
       <bpmn:incoming>Flow_13hrew3</bpmn:incoming>
       <bpmn:outgoing>Flow_0ev5i33</bpmn:outgoing>
     </bpmn:serviceTask>
@@ -98,12 +99,6 @@
       <bpmn:messageEventDefinition id="MessageEventDefinition_1bqejms" camunda:delegateExpression="${eventService}" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_13hrew3" sourceRef="Event_1niowch" targetRef="Activity_02v4kcs" />
-    <bpmn:sequenceFlow id="Flow_1x3o4pv" sourceRef="Event_0txayz0" targetRef="Gateway_1e6g3bu" />
-    <bpmn:intermediateCatchEvent id="Event_0txayz0" name="Auf Vertrags-&#10;bestätigung&#10;warten">
-      <bpmn:incoming>Flow_0ev5i33</bpmn:incoming>
-      <bpmn:outgoing>Flow_1x3o4pv</bpmn:outgoing>
-      <bpmn:messageEventDefinition id="MessageEventDefinition_1gll3g3" messageRef="Message_27pc6eg" />
-    </bpmn:intermediateCatchEvent>
     <bpmn:intermediateThrowEvent id="Event_0u2sa8u" name="Log Event:&#10;Vertrag geprüft und angenommen" camunda:asyncBefore="true">
       <bpmn:extensionElements>
         <camunda:inputOutput>
@@ -119,7 +114,7 @@
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_1i1spzy" sourceRef="Event_0u2sa8u" targetRef="Event_09vqbrz" />
     <bpmn:exclusiveGateway id="Gateway_1e6g3bu" name="Vertrag akzeptiert?" default="Flow_0yz7mxd">
-      <bpmn:incoming>Flow_1x3o4pv</bpmn:incoming>
+      <bpmn:incoming>Flow_1jtlgnp</bpmn:incoming>
       <bpmn:outgoing>Flow_0yz7mxd</bpmn:outgoing>
       <bpmn:outgoing>Flow_0ks4iu1</bpmn:outgoing>
     </bpmn:exclusiveGateway>
@@ -237,6 +232,12 @@ return jsonObject.reason</camunda:script>
       <bpmn:messageEventDefinition id="MessageEventDefinition_0f5k0ln" camunda:delegateExpression="${eventService}" />
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_1xrvn0o" sourceRef="Event_1sgo5l3" targetRef="Event_125o8xg" />
+    <bpmn:intermediateCatchEvent id="Event_0vd8uju" name="Auf Prüfung des Vertrages warten">
+      <bpmn:incoming>Flow_0ev5i33</bpmn:incoming>
+      <bpmn:outgoing>Flow_1jtlgnp</bpmn:outgoing>
+      <bpmn:messageEventDefinition id="MessageEventDefinition_1xid02h" messageRef="Message_27pc6eg" />
+    </bpmn:intermediateCatchEvent>
+    <bpmn:sequenceFlow id="Flow_1jtlgnp" sourceRef="Event_0vd8uju" targetRef="Gateway_1e6g3bu" />
     <bpmn:group id="Group_00kushr" categoryValueRef="CategoryValue_17su1e7" />
     <bpmn:group id="Group_0muppfr" categoryValueRef="CategoryValue_0uph9pu" />
     <bpmn:group id="Group_1mumawh" categoryValueRef="CategoryValue_1aatlja" />
@@ -325,12 +326,6 @@ return jsonObject.reason</camunda:script>
           <dc:Bounds x="1606" y="352" width="78" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_0dozbkj_di" bpmnElement="Event_0txayz0">
-        <dc:Bounds x="1856" y="309" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1842" y="352" width="65" height="40" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Gateway_0fgrjxd_di" bpmnElement="Gateway_0fgrjxd" isMarkerVisible="true">
         <dc:Bounds x="685" y="302" width="50" height="50" />
         <bpmndi:BPMNLabel>
@@ -408,6 +403,12 @@ return jsonObject.reason</camunda:script>
           <dc:Bounds x="2055" y="545" width="73" height="40" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_1wrd7q1" bpmnElement="Event_0vd8uju">
+        <dc:Bounds x="1862" y="309" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1838" y="352" width="84" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="Association_0om0v5e_di" bpmnElement="Association_0om0v5e">
         <di:waypoint x="279" y="287" />
         <di:waypoint x="296" y="207" />
@@ -454,7 +455,7 @@ return jsonObject.reason</camunda:script>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0ev5i33_di" bpmnElement="Flow_0ev5i33">
         <di:waypoint x="1824" y="327" />
-        <di:waypoint x="1856" y="327" />
+        <di:waypoint x="1862" y="327" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_0ah7lkm_di" bpmnElement="Flow_0ah7lkm">
         <di:waypoint x="842" y="327" />
@@ -466,10 +467,6 @@ return jsonObject.reason</camunda:script>
         <bpmndi:BPMNLabel>
           <dc:Bounds x="766" y="309" width="9" height="14" />
         </bpmndi:BPMNLabel>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1x3o4pv_di" bpmnElement="Flow_1x3o4pv">
-        <di:waypoint x="1892" y="327" />
-        <di:waypoint x="1965" y="327" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_067m3an_di" bpmnElement="Flow_067m3an">
         <di:waypoint x="710" y="352" />
@@ -521,6 +518,10 @@ return jsonObject.reason</camunda:script>
       <bpmndi:BPMNEdge id="Flow_1xrvn0o_di" bpmnElement="Flow_1xrvn0o">
         <di:waypoint x="2108" y="520" />
         <di:waypoint x="2168" y="520" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1jtlgnp_di" bpmnElement="Flow_1jtlgnp">
+        <di:waypoint x="1898" y="327" />
+        <di:waypoint x="1965" y="327" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Group_00kushr_di" bpmnElement="Group_00kushr">
         <dc:Bounds x="974" y="235" width="230" height="167" />

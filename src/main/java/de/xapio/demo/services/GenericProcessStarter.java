@@ -11,6 +11,8 @@ import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.bpm.engine.variable.value.NumberValue;
 import org.camunda.bpm.engine.variable.value.StringValue;
 import org.camunda.spin.json.SpinJsonNode;
+import org.camunda.spin.plugin.variable.SpinValues;
+import org.camunda.spin.plugin.variable.value.JsonValue;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -115,6 +117,13 @@ public class GenericProcessStarter implements JavaDelegate {
                 items.add(item.stringValue());
             });
             ib.setVariable(prop, items);
+        }
+
+        // object
+        if(this.is(var, "object")) {
+            log.info("setting object variable: " + prop);
+            JsonValue value = SpinValues.jsonValue(v).create();
+            ib.setVariable(prop, value);
         }
     }
 

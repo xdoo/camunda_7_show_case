@@ -1,0 +1,25 @@
+{
+  "components": [
+    {
+      "text": "# Ablehnung prüfen",
+      "type": "text",
+      "id": "Field_0yo4mp4"
+    },
+    {
+      "label": "Text Field",
+      "type": "textfield",
+      "id": "Field_12quxa8",
+      "key": "reason",
+      "properties": {}
+    }
+  ],
+  "type": "default",
+  "id": "check_bill_rejection",
+  "executionPlatform": "Camunda Cloud",
+  "executionPlatformVersion": "8.1.0",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.5.0"
+  },
+  "schemaVersion": 5
+}

@@ -1,0 +1,18 @@
+{
+  "components": [
+    {
+      "text": "# Fehlermeldungen überprüfen",
+      "type": "text",
+      "id": "Field_0xl60xr"
+    }
+  ],
+  "type": "default",
+  "id": "check_bill_errors",
+  "exporter": {
+    "name": "Camunda Modeler",
+    "version": "5.5.0"
+  },
+  "executionPlatform": "Camunda Platform",
+  "executionPlatformVersion": "7.18.0",
+  "schemaVersion": 5
+}

@@ -2,6 +2,7 @@ package de.xapio.demo.services.provider;
 
 import de.xapio.demo.services.basedata.LoadItemService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,9 @@ public class Lot1ContractServiceMock extends AbstractProviderMockService {
         Random random = new Random();
         int distance = random.nextInt(25 - 4) + 4;
 
+        // Random contract number
+        String contractNr = RandomStringUtils.randomAlphabetic(15, 15);
+
         // price params
         ArrayList<String> priceParamIds = (ArrayList<String>) delegate.getVariable(LoadItemService.PRICE_PARAM_IDS);
         StringBuilder sb = new StringBuilder();
@@ -45,6 +49,7 @@ public class Lot1ContractServiceMock extends AbstractProviderMockService {
         // prepare payload
         String payload = String.format("{\n" +
                 "   \"contract_date\": \"%s\",\n" +
+                "   \"provider_contract_number\": \"%s\",\n" +
                 "   \"organisation\": \"%s\",\n" +
                 "   \"item_order\": \"%s\",\n" +
                 "   \"address\": %s,\n" +
@@ -64,7 +69,7 @@ public class Lot1ContractServiceMock extends AbstractProviderMockService {
                 "       }\n" +
                 "   ],\n" +
                 "   \"status\": \"published\" \n" +
-                "}", date, orgId, itemOrder,address, sb.toString(), distance);
+                "}", date, contractNr, orgId, itemOrder,address, sb.toString(), distance);
 
         // set vars for process
         delegate.setVariable("contract", payload);

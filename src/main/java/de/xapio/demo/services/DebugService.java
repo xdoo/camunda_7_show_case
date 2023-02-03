@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 public class DebugService implements JavaDelegate {
     @Override
     public void execute(DelegateExecution delegate) throws Exception {
+        Object debug = delegate.getVariable("debug");
         log.info(delegate.getProcessBusinessKey());
     }
 }
