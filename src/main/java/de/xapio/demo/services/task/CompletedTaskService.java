@@ -5,6 +5,8 @@ import org.camunda.bpm.engine.RuntimeService;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.bpm.engine.variable.Variables;
 import org.camunda.spin.json.SpinJsonNode;
+import org.camunda.spin.plugin.variable.SpinValues;
+import org.camunda.spin.plugin.variable.value.JsonValue;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -38,9 +40,10 @@ public class CompletedTaskService extends AbstractTaskService {
         if(jsonTask.hasProp("correlation_key")) {
             String correlationKey = jsonTask.prop("correlation_key").stringValue();
             String[] split = this.splitcorrelationKey(correlationKey);
+            JsonValue jsonPayload = SpinValues.jsonValue(payload).create();
             this.runtimeService.createMessageCorrelation(split[1])
                     .processInstanceBusinessKey(split[0])
-                    .setVariable("payload", payload)
+                    .setVariable("payload", jsonPayload)
                     .correlate();
         } else {
             log.warn("no correlation key found!");

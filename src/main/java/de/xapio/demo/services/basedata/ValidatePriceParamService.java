@@ -74,6 +74,8 @@ public class ValidatePriceParamService extends AbstractBasedataService {
                 msgType = "Fehler";
             }
 
+            log.info("Rechnungsposten " + typeName + " wurde geprüft.");
+
         } else if (pps.isEmpty()) {
             // Fehler erzeugen -> kann ein Fehler in der Rechnung sein, oder aber in der Leistungskonfiguration
             name = String.format("%s: Keine Prüfung möglich", typeName);

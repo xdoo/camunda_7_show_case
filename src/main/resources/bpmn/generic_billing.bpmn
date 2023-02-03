@@ -49,7 +49,7 @@
     <bpmn:subProcess id="Activity_0578z8k">
       <bpmn:incoming>Flow_1m7w7tn</bpmn:incoming>
       <bpmn:outgoing>Flow_0xl563r</bpmn:outgoing>
-      <bpmn:multiInstanceLoopCharacteristics camunda:collection="${bill_items}" camunda:elementVariable="bill_item" />
+      <bpmn:multiInstanceLoopCharacteristics isSequential="true" camunda:collection="${bill_items}" camunda:elementVariable="bill_item" />
       <bpmn:startEvent id="Event_0u64u3i">
         <bpmn:outgoing>Flow_1h34nom</bpmn:outgoing>
       </bpmn:startEvent>
@@ -58,7 +58,7 @@
       </bpmn:endEvent>
       <bpmn:sequenceFlow id="Flow_1h34nom" sourceRef="Event_0u64u3i" targetRef="Activity_0jaokfv" />
       <bpmn:sequenceFlow id="Flow_1s5i0h2" sourceRef="Activity_0jaokfv" targetRef="Event_0wxkcjg" />
-      <bpmn:serviceTask id="Activity_0jaokfv" name="Rechnungs- posten validieren" camunda:asyncAfter="true" camunda:delegateExpression="${validatePriceParamService}">
+      <bpmn:serviceTask id="Activity_0jaokfv" name="Rechnungs- posten validieren" camunda:delegateExpression="${validatePriceParamService}">
         <bpmn:incoming>Flow_1h34nom</bpmn:incoming>
         <bpmn:outgoing>Flow_1s5i0h2</bpmn:outgoing>
       </bpmn:serviceTask>
@@ -122,7 +122,7 @@
     <bpmn:serviceTask id="Activity_004kfd4" name="Rechnung sachlich prüfen und Freigeben" camunda:asyncAfter="true" camunda:delegateExpression="${createTaskService}">
       <bpmn:extensionElements>
         <camunda:inputOutput>
-          <camunda:inputParameter name="form_id">bill</camunda:inputParameter>
+          <camunda:inputParameter name="form_id">bill-approval</camunda:inputParameter>
           <camunda:inputParameter name="organisation">${organisation_id}</camunda:inputParameter>
           <camunda:inputParameter name="reference">${bill_id}</camunda:inputParameter>
           <camunda:inputParameter name="event_id">wait_for_bill_approval</camunda:inputParameter>
@@ -184,8 +184,8 @@
     <bpmn:intermediateThrowEvent id="Event_15mju3m" name="Rechnung wurde sachlich durch den AB geprüft und ist valide" camunda:asyncAfter="true">
       <bpmn:extensionElements>
         <camunda:inputOutput>
-          <camunda:inputParameter name="name">Rechnung erfolgreich geprüft</camunda:inputParameter>
-          <camunda:inputParameter name="message">Die Rechnung wurde rechnerisch gegen den Vertrag geprüft und für korrekt befunden.</camunda:inputParameter>
+          <camunda:inputParameter name="name">Rechnung durch AB freigegeben</camunda:inputParameter>
+          <camunda:inputParameter name="message">Die Rechnung wurde vom AB sachlich geprüft und freigegeben.</camunda:inputParameter>
           <camunda:inputParameter name="type">Log Eintrag</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
@@ -195,13 +195,15 @@
     </bpmn:intermediateThrowEvent>
     <bpmn:sequenceFlow id="Flow_1ek671c" sourceRef="Event_15mju3m" targetRef="Event_1rz4jn9" />
     <bpmn:sequenceFlow id="Flow_04vx7nv" sourceRef="Gateway_0fdiqvy" targetRef="Event_15b8rqq">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${rejected == "true"}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${payload.prop("selection") == "deny"}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:intermediateThrowEvent id="Event_15b8rqq" name="Rechnung wurde sachlich durch den AB geprüft und abgelehnt" camunda:asyncAfter="true">
       <bpmn:extensionElements>
         <camunda:inputOutput>
-          <camunda:inputParameter name="name">Rechnung erfolgreich geprüft</camunda:inputParameter>
-          <camunda:inputParameter name="message">Die Rechnung wurde rechnerisch gegen den Vertrag geprüft und für korrekt befunden.</camunda:inputParameter>
+          <camunda:inputParameter name="name">Rechnung vom AB geprüft und abgelehnt</camunda:inputParameter>
+          <camunda:inputParameter name="message">Die Rechnung wurde vom AB sachlich geprüft un mit folgendem Grund abgelehnt: 
+
+${payload.prop("reason")}</camunda:inputParameter>
           <camunda:inputParameter name="type">Log Eintrag</camunda:inputParameter>
         </camunda:inputOutput>
       </bpmn:extensionElements>
@@ -214,7 +216,12 @@
       <bpmn:incoming>Flow_00fl90j</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_00fl90j" sourceRef="Activity_1ateoia" targetRef="Event_0yon8kv" />
-    <bpmn:userTask id="Activity_1ateoia" name="Ablehnung prüfen" camunda:formRef="wait_for_bill_approval" camunda:formRefBinding="latest">
+    <bpmn:userTask id="Activity_1ateoia" name="Ablehnung prüfen" camunda:formRef="check_bill_rejection" camunda:formRefBinding="latest">
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="reason">${reason}</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_13qq0wc</bpmn:incoming>
       <bpmn:outgoing>Flow_00fl90j</bpmn:outgoing>
     </bpmn:userTask>

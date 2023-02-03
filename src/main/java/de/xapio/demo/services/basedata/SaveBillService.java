@@ -70,6 +70,9 @@ public class SaveBillService extends AbstractBasedataService {
         // set bill items as process var
         List<String> billItemVars = billItems.stream().map(b -> b.toString()).collect(Collectors.toList());
         delegate.setVariable(GenericBillingVars.BILL_ITEMS, billItemVars);
+
+        // set bill id as bussiness key - so the correlation can be unique
+        delegate.setProcessBusinessKey(billId);
     }
 
     public ArrayList<SpinJsonNode> createBillItems(JacksonJsonNode bill) {
