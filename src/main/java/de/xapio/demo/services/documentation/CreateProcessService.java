@@ -1,20 +1,9 @@
 package de.xapio.demo.services.documentation;
 
-import com.google.common.collect.Lists;
-import de.xapio.demo.model.DocAtts;
-import de.xapio.demo.services.basedata.LoadItemService;
-import de.xapio.demo.services.basedata.LoadOrganisationService;
 import lombok.extern.slf4j.Slf4j;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
-import org.camunda.spin.SpinList;
-import org.camunda.spin.json.SpinJsonNode;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
 import org.springframework.stereotype.Service;
-
-import java.time.LocalDateTime;
-
-import static org.camunda.spin.Spin.JSON;
 
 @Service @Slf4j
 public class CreateProcessService extends AbstractDocumentationService {

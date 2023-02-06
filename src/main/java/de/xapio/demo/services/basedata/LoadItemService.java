@@ -6,7 +6,6 @@ import org.camunda.spin.json.SpinJsonNode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.beans.PropertyEditorSupport;
 import java.util.ArrayList;
 import java.util.List;
 
