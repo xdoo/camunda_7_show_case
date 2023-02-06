@@ -15,10 +15,14 @@ public class CreateTaskService extends AbstractTaskService {
     public void execute(DelegateExecution delegate) throws Exception {
 
         // prepare payload
-        String orgId = delegate.getVariable("organisation").toString();
-        String formId = delegate.getVariable("form_id").toString();
-        String reference = delegate.getVariable("reference").toString();
-        String title = delegate.getVariable("title").toString();
+
+        String formId = this.getVariableStringValue(delegate,"form_id");
+        String reference = this.getVariableStringValue(delegate, "reference");
+        String title = this.getVariableStringValue(delegate, "title");
+        String orgId = this.getVariableStringValue(delegate, "organisation");
+
+
+
         String correlationId = this.createCorrelationKey(delegate.getBusinessKey(), delegate.getVariable("event_id").toString());
 
         String payload = String.format("{\n" +

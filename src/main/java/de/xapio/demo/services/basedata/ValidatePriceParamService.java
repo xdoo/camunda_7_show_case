@@ -68,8 +68,8 @@ public class ValidatePriceParamService extends AbstractBasedataService {
                 msgType = "Korrekt geprüft";
             } else {
                 name = String.format("%s: Prüfung nicht erfolgreich", typeName);
-                StringBuilder sb = new StringBuilder(String.format("Bei der Prüfung des Rechnungsposten '%s' wurden Fehler festgestellt: \n", typeName));
-                errorStack.stream().forEach(e -> sb.append(e).append("\n"));
+                StringBuilder sb = new StringBuilder(String.format("Bei der Prüfung des Rechnungsposten '%s' wurden Fehler festgestellt: ", typeName));
+                errorStack.stream().forEach(e -> sb.append(e).append(" - "));
                 message = sb.toString();
                 msgType = "Fehler";
             }

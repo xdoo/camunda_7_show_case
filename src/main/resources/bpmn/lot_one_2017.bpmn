@@ -194,14 +194,7 @@
       <bpmn:incoming>Flow_1xrvn0o</bpmn:incoming>
     </bpmn:endEvent>
     <bpmn:sequenceFlow id="Flow_0ks4iu1" name="nein" sourceRef="Gateway_1e6g3bu" targetRef="Event_1sgo5l3">
-      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression" language="groovy">
-def jsonObject = new groovy.json.JsonSlurper().parseText(payload)
-
-if(jsonObject.selection == "deny") {
-    return true
-} else {
-    return false
-}</bpmn:conditionExpression>
+      <bpmn:conditionExpression xsi:type="bpmn:tFormalExpression">${payload.prop("selection") == "deny"}</bpmn:conditionExpression>
     </bpmn:sequenceFlow>
     <bpmn:serviceTask id="Activity_1m06gf0" name="AB über die Ablehnung informieren" camunda:delegateExpression="${createTaskService}">
       <bpmn:extensionElements>
