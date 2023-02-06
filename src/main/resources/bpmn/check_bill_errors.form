@@ -4,6 +4,38 @@
       "text": "# Fehlermeldungen überprüfen",
       "type": "text",
       "id": "Field_0xl60xr"
+    },
+    {
+      "text": "Folgende Rechnung wurde als fehlerheaft geprüft:",
+      "type": "text",
+      "id": "Field_1f7lto8"
+    },
+    {
+      "label": "Rechnungs ID",
+      "type": "textfield",
+      "id": "Field_0ciairi",
+      "key": "bill_id",
+      "disabled": true
+    },
+    {
+      "label": "Sachbearbeiter Kommentar",
+      "type": "textfield",
+      "id": "Field_00zj3at",
+      "key": "approver_message"
+    },
+    {
+      "label": "Rechnung als rechnerisch korrekt kennzeichnen",
+      "type": "checkbox",
+      "id": "Field_0204rri",
+      "key": "zs_approval",
+      "properties": {}
+    },
+    {
+      "action": "submit",
+      "label": "Speichern",
+      "type": "button",
+      "id": "Field_0gjz1fw",
+      "key": "field_11quz02"
     }
   ],
   "type": "default",
