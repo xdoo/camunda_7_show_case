@@ -1,7 +1,7 @@
 {
   "components": [
     {
-      "text": "# Rechnung konnte keinem Vertrag zugeordnet werden",
+      "text": "# Fehler im Rechnungsprozess",
       "type": "text",
       "id": "Field_04pl8f5"
     },
@@ -26,7 +26,7 @@
     }
   ],
   "type": "default",
-  "id": "contract_missmatch_form",
+  "id": "check_error_form",
   "exporter": {
     "name": "Camunda Modeler",
     "version": "5.5.0"

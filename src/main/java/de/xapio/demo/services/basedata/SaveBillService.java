@@ -3,11 +3,13 @@ package de.xapio.demo.services.basedata;
 import com.google.common.collect.Lists;
 import de.xapio.demo.processes.GenericBillingVars;
 import lombok.extern.slf4j.Slf4j;
+import org.camunda.bpm.engine.delegate.BpmnError;
 import org.camunda.bpm.engine.delegate.DelegateExecution;
 import org.camunda.spin.SpinList;
 import org.camunda.spin.impl.json.jackson.JacksonJsonNode;
 import org.camunda.spin.json.SpinJsonNode;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -61,11 +63,16 @@ public class SaveBillService extends AbstractBasedataService {
                 "}", rechnungsDatum, nettoBetrag, bruttoBetrag, steuer, rechnungsNummer, contractId, raw, items);
         log.info(payload);
 
-        String response = this.restTemplate.postForObject(this.billUrl, payload, String.class);
-        log.info(response);
+        ResponseEntity<String> response = this.restTemplate.postForEntity(this.billUrl, payload, String.class);
+
+        if(response.getStatusCode().isError()) {
+            throw new BpmnError("save_bill_error", String.format("Die Rechnung konnte nicht gespeichert werden: %s ", response.getBody()));
+        }
+
+        log.info(response.getBody());
 
         // set bill id as process var
-        String billId = JSON(response).prop("data").prop("id").stringValue();
+        String billId = JSON(response.getBody()).prop("data").prop("id").stringValue();
         delegate.setVariable(GenericBillingVars.BILL_ID, billId);
 
         // set bill items as process var
