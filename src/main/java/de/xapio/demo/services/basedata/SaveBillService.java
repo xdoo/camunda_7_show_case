@@ -63,16 +63,17 @@ public class SaveBillService extends AbstractBasedataService {
                 "}", rechnungsDatum, nettoBetrag, bruttoBetrag, steuer, rechnungsNummer, contractId, raw, items);
         log.info(payload);
 
-        ResponseEntity<String> response = this.restTemplate.postForEntity(this.billUrl, payload, String.class);
-
-        if(response.getStatusCode().isError()) {
-            throw new BpmnError("save_bill_error", String.format("Die Rechnung konnte nicht gespeichert werden: %s ", response.getBody()));
+        String response = "";
+        try {
+            ResponseEntity<String> responseEntity = this.restTemplate.postForEntity(this.billUrl, payload, String.class);
+            response = responseEntity.getBody();
+        } catch (Exception e) {
+            throw new BpmnError("save_bill_error", String.format("Die Rechnung konnte nicht gespeichert werden: %s ", e.getMessage()));
         }
-
-        log.info(response.getBody());
+        log.info(response);
 
         // set bill id as process var
-        String billId = JSON(response.getBody()).prop("data").prop("id").stringValue();
+        String billId = JSON(response).prop("data").prop("id").stringValue();
         delegate.setVariable(GenericBillingVars.BILL_ID, billId);
 
         // set bill items as process var

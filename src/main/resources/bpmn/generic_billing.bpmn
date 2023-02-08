@@ -41,7 +41,11 @@
     <bpmn:sequenceFlow id="Flow_0kqdsys" sourceRef="contract_not_found" targetRef="Activity_1yjo43g" />
     <bpmn:sequenceFlow id="Flow_03q5hgt" sourceRef="Activity_1yjo43g" targetRef="Event_11nanc1" />
     <bpmn:userTask id="Activity_1yjo43g" name="Datensatz prüfen" camunda:formRef="check_error_form" camunda:formRefBinding="latest">
-      <bpmn:extensionElements />
+      <bpmn:extensionElements>
+        <camunda:inputOutput>
+          <camunda:inputParameter name="bill">${bill}</camunda:inputParameter>
+        </camunda:inputOutput>
+      </bpmn:extensionElements>
       <bpmn:incoming>Flow_0kqdsys</bpmn:incoming>
       <bpmn:incoming>Flow_0vh2g2k</bpmn:incoming>
       <bpmn:outgoing>Flow_03q5hgt</bpmn:outgoing>

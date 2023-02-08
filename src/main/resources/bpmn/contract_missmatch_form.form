@@ -15,7 +15,7 @@
       "label": "Datensatz",
       "type": "textfield",
       "id": "Field_03rfyzv",
-      "key": "bill"
+      "key": "csv"
     },
     {
       "action": "submit",

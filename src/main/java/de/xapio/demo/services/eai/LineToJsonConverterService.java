@@ -19,23 +19,25 @@ public class LineToJsonConverterService {
         log.info(header);
         log.info(payload.toString());
 
-        StringBuilder sb = new StringBuilder("{");
+        StringBuilder sbJson = new StringBuilder("{");
         String businessKey = "";
+
+        String csv = String.join(",", payload);
 
         ArrayList<String> cols = Lists.newArrayList(header.split(","));
         for(int i=0;i<cols.size();i++) {
             // add a ',' for all cols except the first
             if(i>0) {
-                sb.append(",");
+                sbJson.append(",");
             }
-            sb.append("\"").append(cols.get(i)).append("\": \"").append(payload.get(i).trim()).append("\"\n");
+            sbJson.append("\"").append(cols.get(i)).append("\": \"").append(payload.get(i).trim()).append("\"\n");
 
             // business key
             if(cols.get(i).equals(businessKeyName)) {
                 businessKey = payload.get(i);
             }
         }
-        sb.append("}");
+        sbJson.append("}");
 
         String result = String.format("{\n" +
                 "   \"businessKey\":\"%s\",\n" +
@@ -46,12 +48,16 @@ public class LineToJsonConverterService {
                 "         \"value\":%s,\n" +
                 "         \"type\":\"object\"\n" +
                 "      },\n" +
+                "      \"csv\":{\n" +
+                "         \"value\":\"%s\",\n" +
+                "         \"type\":\"string\"\n" +
+                "      },\n" +
                 "      \"bill_provider_number\":{\n" +
                 "         \"value\":\"%s\",\n" +
                 "         \"type\":\"string\"\n" +
                 "      }\n" +
                 "   }\n" +
-                "}", businessKey, processId, sb.toString(), businessKey);
+                "}", businessKey, processId, sbJson.toString(), csv, businessKey);
 
         return result;
     }
